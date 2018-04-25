@@ -1,0 +1,3 @@
+{
+  "presets": ["./.babelrc-preset.js"]
+}

@@ -2,16 +2,65 @@
   "name": "ibill",
   "version": "0.1.0",
   "description": "This library provides the official js access to ibill teamplate engine",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "browser": "./lib/es6/index.js",
+  "module": "./lib/es6/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:cjs && npm run build:es6",
+    "build:cjs": "BABEL_ENV=cjs babel src --out-dir lib --ignore '**/test/**,**.test.js'",
+    "build:es6": "BABEL_ENV=es6 babel src --out-dir lib/es6 --ignore '**/test/**,**.test.js'",
+    "prepublish": "npm test && npm run eslint && rm -rf ./lib && npm run build",
+    "start": "npm run build:es6 -- --watch",
+    "eslint": "eslint src",
+    "test": "jest"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ]
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
+    "@babel/core": "7.0.0-beta.46",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.46",
+    "@babel/plugin-proposal-export-default-from": "7.0.0-beta.46",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.0.0-beta.46",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.46",
+    "@babel/plugin-proposal-optional-chaining": "7.0.0-beta.46",
+    "@babel/plugin-proposal-pipeline-operator": "7.0.0-beta.46",
+    "@babel/preset-env": "7.0.0-beta.46",
+    "@babel/preset-react": "7.0.0-beta.46",
+    "babel-core": "^7.0.0-0",
+    "babel-eslint": "8.2.3",
+    "babel-jest": "23.0.0-alpha.0",
+    "babel-plugin-lodash": "3.3.2",
+    "eslint": "4.19.1",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-plugin-babel": "5.1.0",
+    "eslint-plugin-dependencies": "2.4.0",
+    "eslint-plugin-import": "2.11.0",
+    "eslint-plugin-jest": "21.15.1",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-lodash": "2.7.0",
+    "eslint-plugin-react": "7.7.0",
+    "jest": "22.4.3",
+    "shelljs": "0.8.1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ibill-today/ibill-js.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Eric Fong",
+  "keywords": [
+    "bill",
+    "pdf",
+    "template",
+    "render",
+    "generate"
+  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ibill-today/ibill-js/issues"
   },
