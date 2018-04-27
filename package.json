@@ -20,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "lodash": "^4.17.10",
     "node-fetch": "^2.1.2",
     "pdfmake": "^0.1.36",
     "whatwg-fetch": "^2.0.4"

@@ -1,6 +1,8 @@
 import Path from 'path'
 import PdfmakePrinter from 'pdfmake'
 
+import transform from './transform'
+
 let _printers
 const getPrinter = locale => {
   let p = _printers[locale]
@@ -17,12 +19,12 @@ const getPrinter = locale => {
   return p
 }
 
-const loadTemplate = templateId => {
+export const loadTemplate = templateId => {
   // load template CACHE or from network
 }
+// const template = await loadTemplate(templateId)
 
-export const renderTemplate = async ({ templateId, data }) => {
-  const template = await loadTemplate(templateId)
+export const renderTemplate = async (template, data) => {
   const pdfDef = transform(template, data)
   return getPrinter('zh').createPdfKitDocument(pdfDef)
 }
