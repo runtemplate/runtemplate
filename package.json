@@ -2,15 +2,13 @@
   "name": "ibill",
   "version": "0.1.0",
   "description": "This library provides the official js access to ibill teamplate engine",
-  "main": "./lib/index.js",
-  "browser": "./lib/es6/index.js",
-  "module": "./lib/es6/index.js",
+  "main": "./index.js",
+  "browser": "./index.es.js",
+  "module": "./index.es.js",
   "scripts": {
-    "build": "npm run build:cjs && npm run build:es6",
-    "build:cjs": "BABEL_ENV=cjs babel src --out-dir lib --ignore '**/test/**,**.test.js'",
-    "build:es6": "BABEL_ENV=es6 babel src --out-dir lib/es6 --ignore '**/test/**,**.test.js'",
+    "start": "rollup --config tool/rollup.config.js --watch",
+    "build": "rollup --config tool/rollup.config.js --silent",
     "prepublish": "npm test && npm run eslint && rm -rf ./lib && npm run build",
-    "start": "npm run build:es6 -- --watch",
     "eslint": "eslint src",
     "test": "jest"
   },
@@ -20,10 +18,10 @@
     ]
   },
   "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.10",
-    "node-fetch": "^2.1.2",
     "pdfmake": "^0.1.36",
-    "whatwg-fetch": "^2.0.4"
+    "rollup": "^0.58.2"
   },
   "peerDependencies": {},
   "devDependencies": {

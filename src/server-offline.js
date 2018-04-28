@@ -22,9 +22,10 @@ const getPrinter = locale => {
 export const loadTemplate = templateId => {
   // load template CACHE or from network
 }
-// const template = await loadTemplate(templateId)
 
-export const renderTemplate = async (template, data) => {
+export const renderTemplate = (template, data) => {
   const pdfDef = transform(template, data)
   return getPrinter('zh').createPdfKitDocument(pdfDef)
 }
+
+export default ({ templateId, data }) => loadTemplate(templateId).then(template => renderTemplate(template, data))
