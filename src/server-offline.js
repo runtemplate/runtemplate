@@ -3,6 +3,8 @@ import PdfmakePrinter from 'pdfmake'
 
 import transform from './transform'
 
+export { transform }
+
 let _printers
 const getPrinter = locale => {
   let p = _printers[locale]
@@ -23,9 +25,6 @@ export const loadTemplate = templateId => {
   // load template CACHE or from network
 }
 
-export const renderTemplate = (template, data) => {
-  const pdfDef = transform(template, data)
-  return getPrinter('zh').createPdfKitDocument(pdfDef)
-}
+export const makePdf = (pdfDef, options) => getPrinter('zh').createPdfKitDocument(pdfDef, options)
 
-export default ({ templateId, data }) => loadTemplate(templateId).then(template => renderTemplate(template, data))
+export default ({ templateId, data }) => loadTemplate(templateId).then(template => makePdf(transform(template, data), data))
