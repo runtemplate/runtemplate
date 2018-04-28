@@ -6,7 +6,7 @@
   "browser": "./index.es.js",
   "module": "./index.es.js",
   "scripts": {
-    "start": "rollup --config tool/rollup.config.js --watch",
+    "dev": "rollup --config tool/rollup.config.js --watch",
     "build": "rollup --config tool/rollup.config.js --silent",
     "prepublish": "npm test && npm run eslint && rm -rf ./lib && npm run build",
     "eslint": "eslint src",

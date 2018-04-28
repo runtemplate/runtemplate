@@ -5,7 +5,7 @@ import transform from './transform'
 
 export { transform }
 
-let _printers
+const _printers = {}
 const getPrinter = locale => {
   let p = _printers[locale]
   if (!p) {

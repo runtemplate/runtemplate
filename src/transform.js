@@ -35,4 +35,4 @@ Object.assign(transformers, {
   toPdf,
 })
 
-export default transform
+export default (...args) => args.reduce(transform)
