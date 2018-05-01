@@ -1,3 +1,3 @@
-import transform from './transform'
+import { compile, render, extend } from './template'
 
-export { transform }
+export { compile, render, extend }

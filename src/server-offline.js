@@ -1,9 +1,25 @@
 import Path from 'path'
 import PdfmakePrinter from 'pdfmake'
+import flatCache from 'flat-cache'
 
-import transform from './transform'
+import { compile, render, extend } from './template'
+import { fetchTemplate } from './fetcher'
 
-export { transform }
+export { compile, render, extend }
+
+const _caches = flatCache.load('template-caches', `${__dirname}/../.cache`)
+export const loadTemplate = templateId => {
+  // load template CACHE or from network
+  const cache = _caches.getKey(templateId)
+  if (cache) return cache
+
+  // TODO API-KEY and options?
+  return fetchTemplate(templateId).then(template => {
+    _caches.setKey(templateId, template)
+    _caches.save(true)
+    return template
+  })
+}
 
 const _printers = {}
 const getPrinter = locale => {
@@ -21,10 +37,10 @@ const getPrinter = locale => {
   return p
 }
 
-export const loadTemplate = templateId => {
-  // load template CACHE or from network
-}
-
 export const makePdf = (pdfDef, options) => getPrinter('zh').createPdfKitDocument(pdfDef, options)
 
-export default ({ templateId, data }) => loadTemplate(templateId).then(template => makePdf(transform(template, data), data))
+export default ({ templateId, data }) =>
+  loadTemplate(templateId).then(template => {
+    const pdfDef = render(template, data)
+    return makePdf(pdfDef)
+  })

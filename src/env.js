@@ -1,1 +1,1 @@
-export const API = 'https://ibill.today/pdf-render'
+export const API = 'https://ibill.today'
