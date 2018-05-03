@@ -1,6 +1,6 @@
 {
   "name": "ibill",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "This library provides the official js access to ibill teamplate engine",
   "main": "./index.js",
   "browser": "./index.es.js",
