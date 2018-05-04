@@ -1,25 +1,22 @@
 import Path from 'path'
 import PdfmakePrinter from 'pdfmake'
-import flatCache from 'flat-cache'
+import Cacheman from 'cacheman'
+import CachemanFile from 'cacheman-file'
 
 import { compile, render, extend } from './template'
 import { fetchTemplate } from './fetcher'
 
 export { compile, render, extend }
 
-const _caches = flatCache.load('template-caches', `${__dirname}/../.cache`)
-export const loadTemplate = templateId => {
-  // load template CACHE or from network
-  const cache = _caches.getKey(templateId)
-  if (cache) return cache
-
-  // TODO API-KEY and options?
-  return fetchTemplate(templateId).then(template => {
-    _caches.setKey(templateId, template)
-    _caches.save(true)
-    return template
-  })
-}
+const _caches = new Cacheman({
+  engine: new CachemanFile({ tmpDir: `${__dirname}/../.cache` }),
+})
+// load template network or failback to CACHE
+// TODO API-KEY
+export const loadTemplate = (templateId, option) =>
+  fetchTemplate(templateId, option)
+    .then(template => _caches.set(templateId, template))
+    .catch(() => _caches.get(templateId))
 
 const _printers = {}
 const getPrinter = locale => {

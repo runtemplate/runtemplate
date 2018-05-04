@@ -1,20 +1,20 @@
-import flatCache from 'flat-cache'
+import Cacheman from 'cacheman'
+import CachemanFile from 'cacheman-file'
 
 const cacheDir = `${__dirname}/../.cache`
 
-test('flatCache', () => {
-  const _caches1 = flatCache.load('template-caches', cacheDir)
-  _caches1.removeKey('templateId')
-  _caches1.save()
+test('cacheman-file', async () => {
+  const caches1 = new Cacheman({
+    engine: new CachemanFile({ tmpDir: cacheDir }),
+  })
+  await caches1.clear()
 
-  const _caches2 = flatCache.load('template-caches', cacheDir)
-  expect(_caches2.getKey('templateId')).toEqual()
+  expect(await caches1.get('my-key')).toEqual(null)
+  expect(await caches1.set('my-key', { foo: 'bar' })).toEqual({ foo: 'bar' })
+  expect(await caches1.get('my-key')).toEqual({ foo: 'bar' })
 
-  expect(_caches1.getKey('templateId')).toBe()
-  _caches1.setKey('templateId', { content: 'template' })
-  _caches1.save(true)
-  expect(_caches1.getKey('templateId')).toEqual({ content: 'template' })
-
-  const _caches3 = flatCache.load('template-caches', cacheDir)
-  expect(_caches3.getKey('templateId')).toEqual({ content: 'template' })
+  const caches2 = new Cacheman({
+    engine: new CachemanFile({ tmpDir: cacheDir }),
+  })
+  expect(await caches2.get('my-key')).toEqual({ foo: 'bar' })
 })

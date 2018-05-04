@@ -11,18 +11,22 @@ export async function fetchJson(url, option = {}) {
   if (headers['Content-Type'] === 'application/json' && option.body) {
     option.body = JSON.stringify(option.body)
   }
-  return fetch(url, option).then(res => {
-    const rType = res.headers.get('Content-Type')
-    const promise = !rType || rType.indexOf('/json') >= 0 ? res.json() : res.text()
 
-    if (res.status >= 200 && res.status < 400) return promise
+  return Promise.race([
+    fetch(url, option).then(res => {
+      const rType = res.headers.get('Content-Type')
+      const promise = !rType || rType.indexOf('/json') >= 0 ? res.json() : res.text()
 
-    return promise.then(data => {
-      const error = new Error((data && data.message) || res.statusText)
-      Object.assign(error, { response: res, data })
-      return Promise.reject(error)
-    })
-  })
+      if (res.status >= 200 && res.status < 400) return promise
+
+      return promise.then(data => {
+        const error = new Error((data && data.message) || res.statusText)
+        Object.assign(error, { response: res, data })
+        return Promise.reject(error)
+      })
+    }),
+    new Promise((x, reject) => setTimeout(() => reject(new Error('Timeout')), option.timeout || 3000)),
+  ])
 }
 
 export const fetchTemplate = templateId => fetchJson(`${API}/api/template/${templateId}`)
