@@ -16,10 +16,6 @@ const renderOne = (template, data) => {
   if (template.ibTemplateFunc) {
     return template.ibTemplateFunc({ ...data, template: _.omit(template, 'ibTemplateFunc', 'ibTemplateStr') })
   }
-  if (template.ibTemplateStr) {
-    template.ibTemplateFunc = compileOne(template.ibTemplateStr)
-    return renderOne(template, data)
-  }
   if (template.layout) {
     const outArr = _.map(template.layout, k => renderOne(template[k], data))
     return `[${outArr.join()}]`
@@ -47,16 +43,19 @@ export const render = (template, data) => {
 // Utils
 // =================================
 
-export const compile = obj =>
-  _.mapValues(obj, subObj => {
-    if (subObj && subObj.ibTemplateStr) {
-      return {
-        ...subObj,
-        ibTemplateFunc: compileOne(subObj.ibTemplateStr),
-      }
+export const compile = template => {
+  _.each(template, sub => {
+    if (typeof sub === 'object' && !Array.isArray(sub)) {
+      compile(sub)
     }
-    return subObj
   })
+
+  const str = template.ibTemplateStr
+  if (str && !template.ibTemplateFunc) {
+    template.ibTemplateFunc = compileOne(str)
+  }
+  return template
+}
 
 export const extend = (a, b) => {
   if (typeof b === 'function') return b(a)
