@@ -1,3 +1,3 @@
-import { compile, render, extend } from './template'
+import { render, compile, extend } from './template'
 
-export { compile, render, extend }
+export { render, compile, extend }

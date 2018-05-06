@@ -7,7 +7,7 @@ test('basic', () => {
     Header: {
       fontSize: 22,
     },
-    layout: ['Header', 'Table', 'Total'],
+    layout: ['Header', 'Table', 'Total', 'Notes'],
   })
   const compiledT1 = compile(t1)
 
@@ -86,5 +86,8 @@ test('basic', () => {
     ],
   })
 
-  expect(render(compile(extend({ Header: { fontSize: 22 } }, defaultTemplate)), data).content[1].table.body).toMatchObject(dataOut)
+  const out = render(compile(extend({ Header: { fontSize: 22 } }, defaultTemplate)), data)
+  expect(out.content[1].table.body).toMatchObject(dataOut)
+
+  expect(out.content[3][1].text).toEqual('Some notes goes here \n Notes second line')
 })

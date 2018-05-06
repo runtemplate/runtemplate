@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import Handlebars from 'handlebars'
+import Handlebars from 'handlebars/dist/cjs/handlebars'
 import { format as dateFnsFormat } from 'date-fns'
 import JSON5 from 'json5'
 

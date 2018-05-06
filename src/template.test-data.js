@@ -1,4 +1,5 @@
 import Header from './template.test-Header'
+import Notes from './template.test-Notes'
 
 export default {
   Header: {
@@ -49,7 +50,7 @@ export default {
             },
           ],
           {{#each items}}
-          {{{render ../template.Item }}}
+          {{{ render ../template.Item }}}
           {{/each}}
         ],
       },
@@ -61,10 +62,11 @@ export default {
       { text: "\${{sumBy items 'price'}}" }
     ]`,
   },
+  Notes: { ibTemplateStr: Notes },
 
-  layout: ['Header', 'Table', 'Total'],
+  layout: ['Header', 'Table', 'Total', 'Notes'],
 
   ibTemplateStr: `
-  { content: {{{render template }}} }
+  { content: {{{ render template }}} }
   `,
 }
