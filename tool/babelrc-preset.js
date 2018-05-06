@@ -1,19 +1,24 @@
-module.exports = ({ env }) => {
-  const envStr = env && env()
-  return {
+module.exports = () =>
+  // module.exports = ({ env }) =>
+  // const envStr = env && env()
+  ({
     presets: [
       [
         '@babel/preset-env',
         {
-          es6: {
-            targets: { browsers: '> 1%' },
-            modules: false,
-          },
-          cjs: {
-            targets: { uglify: true },
-          },
-          test: { targets: { node: 'current' } },
-        }[envStr],
+          targets: { browsers: '> 1%' },
+          modules: false,
+        },
+        // {
+        //   es6: {
+        //     targets: { browsers: '> 1%' },
+        //     modules: false,
+        //   },
+        //   cjs: {
+        //     targets: { uglify: true },
+        //   },
+        //   test: { targets: { node: 'current' } },
+        // }[envStr],
       ],
     ].filter(Boolean),
 
@@ -27,5 +32,4 @@ module.exports = ({ env }) => {
       '@babel/plugin-proposal-nullish-coalescing-operator',
       '@babel/plugin-proposal-pipeline-operator',
     ],
-  }
-}
+  })
