@@ -1,26 +1,15 @@
-module.exports = () =>
-  // module.exports = ({ env }) =>
-  // const envStr = env && env()
-  ({
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          targets: { browsers: '> 1%' },
-          modules: false,
-        },
-        // {
-        //   es6: {
-        //     targets: { browsers: '> 1%' },
-        //     modules: false,
-        //   },
-        //   cjs: {
-        //     targets: { uglify: true },
-        //   },
-        //   test: { targets: { node: 'current' } },
-        // }[envStr],
-      ],
-    ].filter(Boolean),
+module.exports = ({ env }) => {
+  const ENV = env && env()
+
+  const envPresentOpts = {
+    default: { targets: { browsers: '> 1%' }, modules: false },
+    // cjs: {  targets: { uglify: true } },
+    test: { targets: { node: 'current' } },
+  }
+  const envPresentOpt = envPresentOpts[ENV] || envPresentOpts.default
+
+  return {
+    presets: [['@babel/preset-env', envPresentOpt]].filter(Boolean),
 
     plugins: [
       '@babel/plugin-proposal-object-rest-spread',
@@ -32,4 +21,5 @@ module.exports = () =>
       '@babel/plugin-proposal-nullish-coalescing-operator',
       '@babel/plugin-proposal-pipeline-operator',
     ],
-  })
+  }
+}
