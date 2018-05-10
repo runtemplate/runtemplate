@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import fetch from 'isomorphic-fetch'
 
-import { API } from './env'
+import { HOST } from './env'
 
 export async function fetchJson(url, option = {}) {
   const headers = (option.headers = _.defaults(option.headers, {
@@ -29,4 +29,4 @@ export async function fetchJson(url, option = {}) {
   ])
 }
 
-export const fetchTemplate = templateId => fetchJson(`${API}/api/template/${templateId}`)
+export const fetchTemplate = (templateId, option = {}) => fetchJson(`${option.host || HOST}/api/template/${templateId}`)

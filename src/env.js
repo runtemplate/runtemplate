@@ -1,1 +1,1 @@
-export const API = 'https://ibill.today'
+export const HOST = 'https://ibill.today'

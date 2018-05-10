@@ -6,7 +6,7 @@ import CachemanFile from 'cacheman-file'
 import { compile, render, extend } from './template'
 import { fetchTemplate } from './fetcher'
 
-export { compile, render, extend }
+export { compile, render, extend, fetchTemplate }
 
 const _caches = new Cacheman({
   engine: new CachemanFile({ tmpDir: `${__dirname}/../.cache` }),
