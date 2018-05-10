@@ -1,6 +1,6 @@
 {
   "name": "ibill",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "This library provides the official js access to ibill teamplate engine",
   "main": "./index.js",
   "//browser": "./index.es.js",
@@ -13,7 +13,9 @@
     "test": "jest"
   },
   "babel": {
-    "presets": ["./tool/babel-preset"]
+    "presets": [
+      "./tool/babel-preset"
+    ]
   },
   "jest": {
     "roots": [
