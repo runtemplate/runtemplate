@@ -1,15 +1,12 @@
+const envPresentOpts = {
+  default: { targets: { browsers: '> 1%' }, modules: false },
+  test: { targets: { node: 'current' } },
+}
+
 module.exports = ({ env }) => {
   const ENV = env && env()
-
-  const envPresentOpts = {
-    default: { targets: { browsers: '> 1%' }, modules: false },
-    // cjs: {  targets: { uglify: true } },
-    test: { targets: { node: 'current' } },
-  }
-  const envPresentOpt = envPresentOpts[ENV] || envPresentOpts.default
-
   return {
-    presets: [['@babel/preset-env', envPresentOpt]].filter(Boolean),
+    presets: [['@babel/preset-env', envPresentOpts[ENV] || envPresentOpts.default]],
 
     plugins: [
       '@babel/plugin-proposal-object-rest-spread',

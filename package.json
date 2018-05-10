@@ -12,6 +12,9 @@
     "eslint": "eslint src",
     "test": "jest"
   },
+  "babel": {
+    "presets": ["./tool/babel-preset"]
+  },
   "jest": {
     "roots": [
       "<rootDir>/src"
@@ -25,8 +28,7 @@
     "isomorphic-fetch": "^2.2.1",
     "json5": "^1.0.1",
     "lodash": "^4.17.10",
-    "pdfmake": "^0.1.36",
-    "rollup": "^0.58.2"
+    "pdfmake": "^0.1.36"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -55,6 +57,7 @@
     "eslint-plugin-react": "7.7.0",
     "jest": "22.4.3",
     "rollup-plugin-babel": "^4.0.0-beta.4",
+    "rollup": "^0.58.2",
     "shelljs": "0.8.1"
   },
   "repository": {
