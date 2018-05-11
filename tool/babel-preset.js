@@ -1,12 +1,10 @@
-const envPresentOpts = {
-  default: { targets: { browsers: '> 1%' }, modules: false },
-  test: { targets: { node: 'current' } },
-}
-
-module.exports = ({ env }) => {
-  const ENV = env && env()
+module.exports = (api, option) => {
+  // const ENV = api.getEnv()
+  // const envPresentOpt = ENV in envPresentOpts ? envPresentOpts[ENV] : envPresentOpts.default
+  const envPresentOpt = { targets: { node: 'current' }, ...option }
+  // console.log('>>>', envPresentOpt)
   return {
-    presets: [['@babel/preset-env', envPresentOpts[ENV] || envPresentOpts.default]],
+    presets: [['@babel/preset-env', envPresentOpt]],
 
     plugins: [
       '@babel/plugin-proposal-object-rest-spread',
