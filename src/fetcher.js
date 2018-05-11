@@ -19,6 +19,7 @@ export async function fetchJson(url, option = {}) {
 
       if (res.status >= 200 && res.status < 400) return promise
 
+      // console.log(res)
       return promise.then(data => {
         const error = new Error((data && data.message) || res.statusText)
         Object.assign(error, { response: res, data })

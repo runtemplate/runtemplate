@@ -16,7 +16,8 @@ const _caches = new Cacheman({
 export const loadTemplate = (templateId, option) =>
   fetchTemplate(templateId, option)
     .then(template => _caches.set(templateId, template))
-    .catch(() => _caches.get(templateId))
+    .catch(err => _caches.get(templateId).then(oldCached => oldCached || Promise.reject(err)))
+    .then(template => template && compile(template))
 
 const _printers = {}
 const getPrinter = locale => {
@@ -38,6 +39,7 @@ export const makePdf = (pdfDef, options) => getPrinter('zh').createPdfKitDocumen
 
 export default ({ templateId, data }) =>
   loadTemplate(templateId).then(template => {
+    console.log('render', template)
     const pdfDef = render(template, data)
     return makePdf(pdfDef)
   })
