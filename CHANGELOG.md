@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.4"></a>
+## [0.3.4](https://github.com/ibill-today/ibill-js/compare/v0.3.3...v0.3.4) (2018-05-12)
+
+
+### Bug Fixes
+
+* add host option ([6eecf74](https://github.com/ibill-today/ibill-js/commit/6eecf74))
+* babel preset usage in rollup ([07056a5](https://github.com/ibill-today/ibill-js/commit/07056a5))
+* convert to stream in makePdf ([cdd37f6](https://github.com/ibill-today/ibill-js/commit/cdd37f6))
+* koa example ([93adc5e](https://github.com/ibill-today/ibill-js/commit/93adc5e))
+* rollup config ([fb9abe7](https://github.com/ibill-today/ibill-js/commit/fb9abe7))
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/ibill-today/ibill-js/compare/v0.3.2...v0.3.3) (2018-05-10)
 
