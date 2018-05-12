@@ -1,5 +1,6 @@
 import Path from 'path'
 import PdfmakePrinter from 'pdfmake'
+import Stream from 'stream'
 import Cacheman from 'cacheman'
 import CachemanFile from 'cacheman-file'
 
@@ -43,7 +44,13 @@ const getPrinter = locale => {
   return p
 }
 
-export const makePdf = (pdfDef, options) => getPrinter('zh').createPdfKitDocument(pdfDef, options)
+export const makePdf = (pdfDef, options) => {
+  const pdfKitDocument = getPrinter('zh').createPdfKitDocument(pdfDef, options)
+  const pdfStream = pdfKitDocument.pipe(Stream.PassThrough())
+  pdfKitDocument.end()
+  pdfStream.pdfKitDocument = pdfKitDocument
+  return pdfStream
+}
 
 export default ({ templateId, data, ...option }) =>
   loadTemplate(templateId, option).then(template => {

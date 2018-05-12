@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   number: 'Receipt-Number',
   timeAt: new Date(),
   items: [

@@ -1,38 +1,17 @@
 const http = require('http')
 
-const renderBill = require('../server-offline')
-
-const data = {
-  number: 'Receipt-Number',
-  timeAt: new Date(),
-  items: [
-    {
-      type: 'Product',
-      name: 'A',
-      quantity: 1,
-      price: 12,
-    },
-    {
-      type: 'Product',
-      name: 'B',
-      quantity: 1,
-      price: 1,
-    },
-  ],
-}
+const renderBill = require('../server-offline').default
+const data = require('./data').default
 
 const server = http.createServer((req, res) => {
   renderBill({
     templateId: 'my-template-id',
     data,
-  }).then(pdf => {
+    host: process.env.IBILL_API || 'https://ibill.today',
+  }).then(pdfStream => {
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/pdf')
-    // ctx.remove('X-Frame-Options')
-
-    pdf.pipe(res)
-    // ctx.body = pdf.pipe(PassThrough())
-    // pdf.end()
+    pdfStream.pipe(res)
   })
 })
 
