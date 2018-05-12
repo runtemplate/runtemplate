@@ -24,7 +24,6 @@ const renderOne = (template, data) => {
 }
 
 Handlebars.registerHelper('render', function renderHelper(template) {
-  // console.log('rr', this)
   return renderOne(template, this)
 })
 

@@ -8,8 +8,10 @@ import { fetchTemplate } from './fetcher'
 
 export { compile, render, extend, fetchTemplate }
 
+const rootDir = Path.join(__dirname, '..')
+
 const _caches = new Cacheman({
-  engine: new CachemanFile({ tmpDir: `${__dirname}/../.cache` }),
+  engine: new CachemanFile({ tmpDir: `${rootDir}/.cache` }),
 })
 // load template network or failback to CACHE
 // TODO API-KEY
@@ -17,7 +19,13 @@ export const loadTemplate = (templateId, option) =>
   fetchTemplate(templateId, option)
     .then(template => _caches.set(templateId, template))
     .catch(err => _caches.get(templateId).then(oldCached => oldCached || Promise.reject(err)))
-    .then(template => template && compile(template))
+    .then(template => {
+      if (template) {
+        // console.log('loadTemplate', template)
+        template.extended = compile(template.extended)
+      }
+      return template
+    })
 
 const _printers = {}
 const getPrinter = locale => {
@@ -25,10 +33,10 @@ const getPrinter = locale => {
   if (!p) {
     p = _printers[locale] = new PdfmakePrinter({
       Roboto: {
-        normal: Path.join(__dirname, 'fonts/chinese.msyh.ttf'),
-        bold: Path.join(__dirname, 'fonts/chinese.msyh.ttf'),
-        italics: Path.join(__dirname, 'fonts/chinese.msyh.ttf'),
-        bolditalics: Path.join(__dirname, 'fonts/chinese.msyh.ttf'),
+        normal: `${rootDir}/fonts/chinese.msyh.ttf`,
+        bold: `${rootDir}/fonts/chinese.msyh.ttf`,
+        italics: `${rootDir}/fonts/chinese.msyh.ttf`,
+        bolditalics: `${rootDir}/fonts/chinese.msyh.ttf`,
       },
     })
   }
@@ -37,9 +45,9 @@ const getPrinter = locale => {
 
 export const makePdf = (pdfDef, options) => getPrinter('zh').createPdfKitDocument(pdfDef, options)
 
-export default ({ templateId, data }) =>
-  loadTemplate(templateId).then(template => {
-    console.log('render', template)
-    const pdfDef = render(template, data)
+export default ({ templateId, data, ...option }) =>
+  loadTemplate(templateId, option).then(template => {
+    const pdfDef = render(template.extended, data)
+    // console.log('render', Object.keys(template))
     return makePdf(pdfDef)
   })
