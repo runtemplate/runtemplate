@@ -1,6 +1,6 @@
 import babel from 'rollup-plugin-babel'
 
-export default ['index', 'browser-offline', 'server-offline'].map(entry => {
+export default ['browser-online', 'browser-offline', 'server-offline'].map(entry => {
   let preset
   if (entry === 'server-offline') {
     preset = { targets: { node: 'current' }, modules: false }
@@ -10,10 +10,7 @@ export default ['index', 'browser-offline', 'server-offline'].map(entry => {
 
   return {
     input: `src/${entry}.js`,
-    output: [
-      { file: `${entry}.js`, format: 'cjs' },
-      // { file: `${entry}-es.js`, format: 'es' }
-    ],
+    output: [{ file: `${entry}/index.js`, format: 'cjs' }, { file: `${entry}/es.js`, format: 'es' }],
     plugins: [
       babel({
         exclude: 'node_modules/**',
