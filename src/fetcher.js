@@ -31,3 +31,5 @@ export async function fetchJson(url, option = {}) {
 }
 
 export const fetchTemplate = (templateId, option = {}) => fetchJson(`${option.host || HOST}/api/template/${templateId}`)
+
+export const fetchFont = (fontName, option = {}) => fetchJson(`${option.host || HOST}/api/font/${fontName}`)
