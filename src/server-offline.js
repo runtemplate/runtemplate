@@ -14,20 +14,6 @@ const debug = obj => {
   return obj
 }
 
-export const loadTemplate = prop =>
-  cacheFetch(`${prop.HOST}/api/template/${prop.templateId}`, prop).then(template => {
-    template.extended = compile(template.extended)
-    return template
-  })
-
-export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}`, prop)
-
-const defaultProp = {
-  loadTemplate,
-  loadFont,
-  HOST,
-}
-
 const _printers = {}
 const getPrinter = prop => {
   const { fonts } = prop.template.extended
@@ -36,25 +22,23 @@ const getPrinter = prop => {
 
   return tryCache(_printers, fontKey, () => {
     const fontNames = fontArr.map(fontPair => fontPair[1])
-    const promises = fontNames.map(fontName => loadFont({ ...prop, fontName }))
+    const promises = fontNames.map(fontName => prop.loadFont({ ...prop, fontName }))
     // return Promise.all(promises).then(fontBase64s => {
     // const vfs = fontBase64s.reduce((ret, fontBase64, i) => {
     //   ret[fontNames[i]] = fontBase64
     //   return ret
     // }, {})
     // console.log('>>>', vfs)
-    return Promise.all(promises).then(
-      () =>
-        new PdfmakePrinter({
-          Roboto: _.mapValues(fonts, fontName => `${cacheDir}/${fontName}`),
-          // Roboto: {
-          //   normal: `${rootDir}/fonts/chinese.msyh.ttf`,
-          //   bold: `${rootDir}/fonts/chinese.msyh.ttf`,
-          //   italics: `${rootDir}/fonts/chinese.msyh.ttf`,
-          //   bolditalics: `${rootDir}/fonts/chinese.msyh.ttf`,
-          // },
-        })
-    )
+    return Promise.all(promises).then(() =>
+      new PdfmakePrinter({
+        Roboto: _.mapValues(fonts, fontName => `${prop.fontDir}/${fontName}`),
+        // Roboto: {
+        //   normal: `${rootDir}/fonts/chinese.msyh.ttf`,
+        //   bold: `${rootDir}/fonts/chinese.msyh.ttf`,
+        //   italics: `${rootDir}/fonts/chinese.msyh.ttf`,
+        //   bolditalics: `${rootDir}/fonts/chinese.msyh.ttf`,
+        // },
+      }))
   })
 }
 
@@ -67,11 +51,25 @@ export const makePdf = prop =>
     return pdfStream
   })
 
-// prop = { templateId, data, loadTemplate, loadFont }
-export default _prop => {
-  const prop = { ...defaultProp, ..._prop }
-  return prop.loadTemplate(prop).then(template => {
-    const pdfDefinition = render(template.extended, prop.data)
-    return makePdf({ ...prop, pdfDefinition, template })
+const renderPdf = prop => prop.loadTemplate(prop).then(template => {
+  const pdfDefinition = render(template.extended, prop.data)
+  return makePdf({ ...prop, pdfDefinition, template })
+})
+
+export const loadTemplate = prop =>
+  cacheFetch(`${prop.HOST}/api/template/${prop.templateId}`, prop, template => {
+    template.extended = compile(template.extended)
+    return template
   })
+
+export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}`, prop)
+
+const defaultProp = {
+  loadTemplate,
+  loadFont,
+  HOST,
+  fontDir: cacheDir,
 }
+
+// prop = { templateId, data, loadTemplate, loadFont }
+export default _prop => renderPdf({ ...defaultProp, ..._prop })

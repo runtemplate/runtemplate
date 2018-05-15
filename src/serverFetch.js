@@ -5,7 +5,7 @@ import { fetchJson, tryCache } from './common'
 
 export const cacheDir = Path.join(__dirname, '../.cache')
 
-const promises = {}
+const memoryPromises = {}
 
 const outputStream = (cacheFilepath, stream) =>
   new Promise(resolve => {
@@ -14,10 +14,10 @@ const outputStream = (cacheFilepath, stream) =>
     })
   })
 
-const serverFetch = (url, option) =>
-  tryCache(promises, url, () => {
+const serverFetch = (url, option, postProcessor) =>
+  tryCache(memoryPromises, url, () => {
     const cacheFilepath = Path.join(cacheDir, Path.basename(url))
-    return fetchJson(url, option)
+    let memoryP = fetchJson(url, option)
       .then(async res => {
         if (res && res.body && res.body.pipe) {
           // stream font
@@ -34,6 +34,10 @@ const serverFetch = (url, option) =>
         const p = isJsonFile ? readJson(cacheFilepath) : Promise.resolve(null)
         return p.then(oldCached => oldCached || Promise.reject(err))
       })
+    if (postProcessor) {
+      memoryP = memoryP.then(postProcessor)
+    }
+    return memoryP
   })
 
 export default serverFetch
