@@ -7,7 +7,7 @@ const server = http.createServer((req, res) => {
   renderBill({
     templateId: 'my-template-id',
     data,
-    host: process.env.IBILL_API || 'https://ibill.today',
+    HOST: process.env.IBILL_API || 'https://ibill.today',
   }).then(pdfStream => {
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/pdf')

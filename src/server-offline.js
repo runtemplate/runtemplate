@@ -46,7 +46,7 @@ const getPrinter = prop => {
     return Promise.all(promises).then(
       () =>
         new PdfmakePrinter({
-          Roboto: _.mapValues(fonts, fontName => `${cacheDir}/font/${fontName}`),
+          Roboto: _.mapValues(fonts, fontName => `${cacheDir}/${fontName}`),
           // Roboto: {
           //   normal: `${rootDir}/fonts/chinese.msyh.ttf`,
           //   bold: `${rootDir}/fonts/chinese.msyh.ttf`,

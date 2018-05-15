@@ -24,6 +24,6 @@ test('serverFetch api json', async () => {
   expect(await fs.readJson(`${cacheDir}/test-template-id`)).toEqual(data)
 })
 
-afterAll(async () => {
-  fs.removeSync(cacheDir)
-})
+// afterAll(async () => {
+//   fs.removeSync(cacheDir)
+// })
