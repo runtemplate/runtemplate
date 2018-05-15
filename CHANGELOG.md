@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/ibill-today/ibill-js/compare/v0.4.0...v0.4.1) (2018-05-15)
+
+
+### Bug Fixes
+
+* use prop.loadFont instead of default loadFont ([e5f1c4f](https://github.com/ibill-today/ibill-js/commit/e5f1c4f))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/ibill-today/ibill-js/compare/v0.3.5...v0.4.0) (2018-05-15)
 
