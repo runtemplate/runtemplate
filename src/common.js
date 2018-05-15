@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import fetch from 'isomorphic-fetch'
+import 'isomorphic-fetch'
 
 export async function fetchJson(url, option = {}) {
   const headers = (option.headers = _.defaults(option.headers, {
