@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/ibill-today/ibill-js/compare/v0.3.5...v0.4.0) (2018-05-15)
+
+
+### Bug Fixes
+
+* test and couple and wait for async ([16ad8bc](https://github.com/ibill-today/ibill-js/commit/16ad8bc))
+
+
+
 <a name="0.3.5"></a>
 ## [0.3.5](https://github.com/ibill-today/ibill-js/compare/v0.3.4...v0.3.5) (2018-05-12)
 
