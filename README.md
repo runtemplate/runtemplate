@@ -17,6 +17,13 @@
 
 ## Usage
 
+CLI server
+
+```
+npm install --global ibill
+ibill
+```
+
 example node.js server
 
 ```js
