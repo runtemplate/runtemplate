@@ -2,9 +2,9 @@
   "name": "ibill",
   "version": "0.4.1",
   "description": "This library provides the official js access to ibill teamplate engine",
-  "main": "./browser-online",
-  "browser": "./browser-online/es",
-  "module": "./browser-online/es",
+  "main": "./server/index.js",
+  "module": "./server/es.js",
+  "browser": "./browser/index.js",
   "scripts": {
     "dev": "rollup --config tool/rollup.config.js --watch",
     "build": "rollup --config tool/rollup.config.js --silent",

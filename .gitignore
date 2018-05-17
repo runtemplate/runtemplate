@@ -1,7 +1,6 @@
 /yarn.lock
-/browser-online
-/browser-offline
-/server-offline
+/browser
+/server
 /.cache
 
 
