@@ -1,12 +1,12 @@
 import Koa from 'koa'
 
-import renderBill from '../src/server-offline'
+import { renderPdf } from '../src/server'
 import data from './data'
 
 const app = new Koa()
 
 app.use(async ctx =>
-  renderBill({
+  renderPdf({
     templateId: 'my-template-id',
     data,
     HOST: process.env.IBILL_API || 'https://ibill.today',

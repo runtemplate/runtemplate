@@ -1,10 +1,10 @@
 const http = require('http')
 
-const renderBill = require('../server-offline').default
+const { renderPdf } = require('../server')
 const data = require('./data').default
 
 const server = http.createServer((req, res) => {
-  renderBill({
+  renderPdf({
     templateId: 'my-template-id',
     data,
     HOST: process.env.IBILL_API || 'https://ibill.today',
