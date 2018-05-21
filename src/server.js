@@ -2,12 +2,12 @@ import _ from 'lodash'
 import PdfmakePrinter from 'pdfmake'
 import Stream from 'stream'
 
-import { compile, render, extend } from './template'
+import { render, extend } from './template'
 import { tryCache } from './common'
 import cacheFetch, { cacheDir } from './serverFetch'
 import { HOST } from './env'
 
-export { compile, render, extend, cacheFetch }
+export { render, extend, cacheFetch }
 
 // const debug = obj => {
 //   console.log(obj)
@@ -41,11 +41,7 @@ const _renderPdf = prop =>
     return makePdf({ ...prop, pdfDefinition, template })
   })
 
-export const loadTemplate = prop =>
-  cacheFetch(`${prop.HOST}/api/template/${prop.templateId}`, prop, template => {
-    template.extended = compile(template.extended)
-    return template
-  })
+export const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.templateId}`, prop)
 
 export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}`, prop)
 

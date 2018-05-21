@@ -1,5 +1,6 @@
 import Path from 'path'
-import { createWriteStream, outputJson, readJson, ensureDir } from 'fs-extra'
+import fse from 'fs-extra'
+import JSONfn from './json-fn'
 
 import { fetchJson, tryCache } from './common'
 
@@ -9,30 +10,34 @@ const memoryPromises = {}
 
 const outputStream = (cacheFilepath, stream) =>
   new Promise(resolve => {
-    ensureDir(cacheDir).then(() => {
-      stream.pipe(createWriteStream(cacheFilepath)).on('finish', resolve)
+    fse.ensureDir(cacheDir).then(() => {
+      stream.pipe(fse.createWriteStream(cacheFilepath)).on('finish', resolve)
     })
   })
 
 const serverFetch = (url, option, postProcessor) =>
   tryCache(memoryPromises, url, () => {
     const cacheFilepath = Path.join(cacheDir, Path.basename(url))
+    // api json return should have no extension, font file should have extension
+    const isJsonFile = !Path.extname(url)
     let memoryP = fetchJson(url, option)
       .then(async res => {
-        if (res && res.body && res.body.pipe) {
-          // stream font
-          await outputStream(cacheFilepath, res.body)
-        } else {
+        if (isJsonFile) {
           // json template
-          await outputJson(cacheFilepath, res)
+          await fse.outputFile(cacheFilepath, res)
+          return JSONfn.parse(res)
         }
-        return res
+        // stream font
+        await outputStream(cacheFilepath, res.body)
+        return true
       })
       .catch(err => {
-        // api json return should have no extension, font file should have extension
-        const isJsonFile = !Path.extname(url)
-        const p = isJsonFile ? readJson(cacheFilepath) : Promise.resolve(null)
-        return p.then(oldCached => oldCached || Promise.reject(err))
+        if (isJsonFile) {
+          // json template
+          return fse.readFile(cacheFilepath).then(cache => (cache ? JSONfn.parse(cache) : Promise.reject(err)))
+        }
+        // stream font
+        return fse.exists(cacheFilepath).then(cache => cache || Promise.reject(err))
       })
     if (postProcessor) {
       memoryP = memoryP.then(postProcessor)

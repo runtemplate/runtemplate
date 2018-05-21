@@ -1,15 +1,14 @@
-import { compile, render, extend } from './template'
+import { render, extend } from './template'
 import defaultTemplate from './template.test-data'
 
 test('basic', () => {
-  const t1 = extend({ Header: { fontSize: 22 } }, defaultTemplate)
+  const t1 = extend({ Header: { Font_Size: 22 } }, defaultTemplate)
   expect(t1).toMatchObject({
     Header: {
-      fontSize: 22,
+      Font_Size: 22,
     },
     layout: ['Header', 'Table', 'Total', 'Notes'],
   })
-  const compiledT1 = compile(t1)
 
   const data = {
     number: 'Receipt-Number',
@@ -47,7 +46,7 @@ test('basic', () => {
       { style: { alignment: 'center', margin: [0, 5, 0, 5] }, text: '$1' },
     ],
   ]
-  const o1 = render(compiledT1, data)
+  const o1 = render(t1, data)
   expect(o1.content[0].columns[1][0].style[1]).toEqual({ fontSize: 22 })
   expect(o1.content[0].columns[1][1].stack[2]).toEqual({
     columns: [{ style: 'invoiceSubTitle', text: 'Due Date', width: '*' }, { style: 'invoiceSubValue', text: '2018-04-15', width: 100 }],
@@ -86,7 +85,7 @@ test('basic', () => {
     ],
   })
 
-  const out = render(compile(extend({ Header: { fontSize: 22 } }, defaultTemplate)), data)
+  const out = render(extend({ Header: { fontSize: 22 } }, defaultTemplate), data)
   expect(out.content[1].table.body).toMatchObject(dataOut)
 
   expect(out.content[3][1].text).toEqual('Some notes goes here \n Notes second line')

@@ -3,70 +3,73 @@ import Notes from './template.test-Notes'
 
 export default {
   Header: {
-    fontSize: 16,
-    ibTemplateStr: Header,
+    Font_Size: 16,
+    render: Header,
   },
 
-  Table: {
-    Item: {
-      ibTemplateStr: `[
+  Item: {
+    render(data) {
+      return [
         [
           {
-            text: "{{type}}",
+            text: `${data.type}`,
             style: { bold: true },
           },
           {
-            text: "{{name}}",
+            text: `${data.name}`,
             style: { italics: true, fontSize: 11 },
           },
         ],
         {
-          text: "{{quantity}}",
+          text: `${data.quantity}`,
           style: { margin: [0, 5, 0, 5], alignment: 'center' },
         },
         {
-          text: "\${{price}}",
+          text: `$${data.price}`,
           style: { margin: [0, 5, 0, 5], alignment: 'center' },
         },
-      ],`,
+      ]
     },
-    ibTemplateStr: `{
-      table: {
-        headerRows: 1,
-        widths: ['*', 'auto', 80],
-        body: [
-          [
-            {
-              text: 'Item',
-              style: 'itemsHeader',
-            },
-            {
-              text: 'Quantity',
-              style: ['itemsHeader', 'center'],
-            },
-            {
-              text: 'Price',
-              style: ['itemsHeader', 'center'],
-            },
+  },
+
+  Table: {
+    render(data, template, util) {
+      return {
+        table: {
+          headerRows: 1,
+          widths: ['*', 'auto', 80],
+          body: [
+            [
+              {
+                text: 'Item',
+                style: 'itemsHeader',
+              },
+              {
+                text: 'Quantity',
+                style: ['itemsHeader', 'center'],
+              },
+              {
+                text: 'Price',
+                style: ['itemsHeader', 'center'],
+              },
+            ],
+            ...util.map(data.items, item => util.render(template.Item, item)),
           ],
-          {{#each items}}
-          {{{ render ../template.Item }}}
-          {{/each}}
-        ],
-      },
-    }`,
+        },
+      }
+    },
   },
 
   Total: {
-    ibTemplateStr: `[
-      { text: "\${{sumBy items 'price'}}" }
-    ]`,
+    render(data, template, util) {
+      return [{ text: `$${util.sumBy(data.items, 'price')}` }]
+    },
   },
-  Notes: { ibTemplateStr: Notes },
+  Notes: { render: Notes },
 
   layout: ['Header', 'Table', 'Total', 'Notes'],
 
-  ibTemplateStr: `
-  { content: {{{ render template }}} }
-  `,
+  render(data, template, util) {
+    return { content: util.render(template, data) }
+  },
 }

@@ -1,16 +1,16 @@
-export default `{
-  "columns": [
+export default (data, template, util) => ({
+  columns: [
     {
-      "image": "http://via.placeholder.com/100x100",
-      "text": "dataUrl image 150x100",
-      "width": 150,
+      image: 'http://via.placeholder.com/100x100',
+      text: 'dataUrl image 150x100',
+      width: 150,
     },
 
     [
       {
-        "text": "Receipt",
-        "style": ["invoiceTitle", { "fontSize": {{template.fontSize}} }],
-        "width": '*',
+        text: 'Receipt',
+        style: ['invoiceTitle', { fontSize: template.Font_Size }],
+        width: '*',
       },
       {
         stack: [
@@ -22,7 +22,7 @@ export default `{
                 width: '*',
               },
               {
-                text: '{{number}}',
+                text: `${data.number}`,
                 style: 'invoiceSubValue',
                 width: 100,
               },
@@ -36,7 +36,7 @@ export default `{
                 width: '*',
               },
               {
-                text: '{{dateFnsFormat timeAt "YYYY-MM-DD"}}',
+                text: util.dateFnsFormat(data.timeAt, 'YYYY-MM-DD'),
                 style: 'invoiceSubValue',
                 width: 100,
               },
@@ -50,7 +50,7 @@ export default `{
                 width: '*',
               },
               {
-                text: '{{dateFnsFormat timeAt "YYYY-MM-DD"}}',
+                text: util.dateFnsFormat(data.timeAt, 'YYYY-MM-DD'),
                 style: 'invoiceSubValue',
                 width: 100,
               },
@@ -60,4 +60,4 @@ export default `{
       },
     ],
   ],
-}`
+})

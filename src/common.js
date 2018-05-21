@@ -13,7 +13,7 @@ export async function fetchJson(url, option = {}) {
   return Promise.race([
     fetch(url, option).then(res => {
       const rType = res.headers.get('Content-Type')
-      const promise = !rType || rType.indexOf('/json') >= 0 ? res.json() : Promise.resolve(res)
+      const promise = !rType || rType.indexOf('/json') >= 0 ? res.text() : Promise.resolve(res)
 
       if (res.status >= 200 && res.status < 400) return promise
 
