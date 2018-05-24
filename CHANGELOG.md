@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/ibill-today/ibill-js/compare/v0.5.0...v0.6.0) (2018-05-24)
+
+
+### Bug Fixes
+
+* build bug ([d80c9d1](https://github.com/ibill-today/ibill-js/commit/d80c9d1))
+
+
+### Features
+
+* add ibill standard server ([b2361a5](https://github.com/ibill-today/ibill-js/commit/b2361a5))
+* use plan js render function ([917338f](https://github.com/ibill-today/ibill-js/commit/917338f))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/ibill-today/ibill-js/compare/v0.4.1...v0.5.0) (2018-05-17)
 
