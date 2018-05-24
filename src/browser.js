@@ -1,10 +1,10 @@
 import fetch from 'isomorphic-fetch'
 
-import { render, compile, extend } from './template'
+import { render, extend } from './template'
 
 import { HOST } from './env'
 
-export { render, compile, extend }
+export { render, extend }
 
 const _renderPdf = prop =>
   fetch(`${prop.HOST}/pdf-render/MY-DOC.pdf`, {
