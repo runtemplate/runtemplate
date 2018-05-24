@@ -34,11 +34,7 @@ const serverFetch = (url, option, postProcessor) =>
       .catch(err => {
         if (isJsonFile) {
           // json template
-          return fse.readFile(cacheFilepath, 'utf8').then(
-            cache =>
-              // console.log('cached', cache, JSONfn.parse(cache))
-              cache ? JSONfn.parse(cache) : Promise.reject(err)
-          )
+          return fse.readFile(cacheFilepath, 'utf8').then(cache => (cache ? JSONfn.parse(cache) : Promise.reject(err)))
         }
         // stream font
         return fse.exists(cacheFilepath).then(cache => cache || Promise.reject(err))
