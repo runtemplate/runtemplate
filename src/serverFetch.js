@@ -6,7 +6,7 @@ import { fetchJson, tryCache } from './common'
 
 export const cacheDir = Path.join(__dirname, '../.cache')
 
-const memoryPromises = {}
+let memoryPromises = {}
 
 const outputStream = (cacheFilepath, stream) =>
   new Promise(resolve => {
@@ -34,7 +34,11 @@ const serverFetch = (url, option, postProcessor) =>
       .catch(err => {
         if (isJsonFile) {
           // json template
-          return fse.readFile(cacheFilepath).then(cache => (cache ? JSONfn.parse(cache) : Promise.reject(err)))
+          return fse.readFile(cacheFilepath, 'utf8').then(
+            cache =>
+              // console.log('cached', cache, JSONfn.parse(cache))
+              cache ? JSONfn.parse(cache) : Promise.reject(err)
+          )
         }
         // stream font
         return fse.exists(cacheFilepath).then(cache => cache || Promise.reject(err))
@@ -44,5 +48,9 @@ const serverFetch = (url, option, postProcessor) =>
     }
     return memoryP
   })
+
+export const clearMemory = () => {
+  memoryPromises = {}
+}
 
 export default serverFetch

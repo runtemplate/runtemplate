@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
-import delay from 'delay'
 
-import cacheFetch, { cacheDir } from './serverFetch'
+import JSONfn from './json-fn'
+import cacheFetch, { cacheDir, clearMemory } from './serverFetch'
 
 beforeAll(async () => {
   fs.removeSync(cacheDir)
@@ -10,18 +10,21 @@ beforeAll(async () => {
 test('serverFetch .ttf file', async () => {
   fetch.once(fs.createReadStream(__filename), { headers: { 'Content-Type': 'pdf' } })
   await cacheFetch('HOST/font/test.ttf')
-  // wait until decoupled promise
-  await delay(500)
   expect(fs.existsSync(`${cacheDir}/test.ttf`)).toBe(true)
 })
 
 test('serverFetch api json', async () => {
-  const data = { json: 'data' }
-  fetch.once(JSON.stringify(data))
+  const data = { json: 'data', render: () => 'result' }
+  const json = JSONfn.stringify(data)
+  fetch.once(json)
   await cacheFetch('HOST/api/template/test-template-id')
-  // wait until decoupled promise
-  await delay(500)
-  expect(await fs.readJson(`${cacheDir}/test-template-id`)).toEqual(data)
+  expect(await fs.readFile(`${cacheDir}/test-template-id`, 'utf8')).toEqual(json)
+
+  // offline
+  clearMemory()
+  fetch.mockRejectOnce(new Error('Offline'))
+  const offline = await cacheFetch('HOST/api/template/test-template-id')
+  expect(`${offline.render}`).toEqual(`${data.render}`)
 })
 
 // afterAll(async () => {
