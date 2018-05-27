@@ -22,7 +22,15 @@ const getPrinter = prop => {
   return tryCache(_printers, fontKey, () => {
     const fontNames = fontArr.map(fontPair => fontPair[1])
     const promises = fontNames.map(fontName => prop.loadFont({ ...prop, fontName }))
-    return Promise.all(promises).then(() => new PdfmakePrinter({ Roboto: _.mapValues(fonts, fontName => `${prop.fontDir}/${fontName}`) }))
+    return Promise.all(promises).then(() =>
+      new PdfmakePrinter({
+        Roboto: {
+          normal: `${prop.fontDir}/${fonts.normal}`,
+          bold: `${prop.fontDir}/${fonts.bold}`,
+          italics: `${prop.fontDir}/${fonts.italics}`,
+          bolditalics: `${prop.fontDir}/${fonts.boldItalics}`,
+        },
+      }))
   })
 }
 
