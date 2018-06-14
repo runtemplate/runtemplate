@@ -6,8 +6,9 @@ import { render, extend } from './template'
 import { tryCache } from './common'
 import cacheFetch, { cacheDir } from './serverFetch'
 import { HOST } from './env'
+import JSONfn, { toJSON, fromJSON } from './json-fn'
 
-export { render, extend, cacheFetch }
+export { render, extend, cacheFetch, JSONfn, toJSON, fromJSON }
 
 // const debug = obj => {
 //   console.log(obj)
@@ -22,15 +23,17 @@ const getPrinter = prop => {
   return tryCache(_printers, fontKey, () => {
     const fontNames = fontArr.map(fontPair => fontPair[1])
     const promises = fontNames.map(fontName => prop.loadFont({ ...prop, fontName }))
-    return Promise.all(promises).then(() =>
-      new PdfmakePrinter({
-        Roboto: {
-          normal: `${prop.fontDir}/${fonts.normal}`,
-          bold: `${prop.fontDir}/${fonts.bold}`,
-          italics: `${prop.fontDir}/${fonts.italics}`,
-          bolditalics: `${prop.fontDir}/${fonts.boldItalics}`,
-        },
-      }))
+    return Promise.all(promises).then(
+      () =>
+        new PdfmakePrinter({
+          Roboto: {
+            normal: `${prop.fontDir}/${fonts.normal}`,
+            bold: `${prop.fontDir}/${fonts.bold}`,
+            italics: `${prop.fontDir}/${fonts.italics}`,
+            bolditalics: `${prop.fontDir}/${fonts.boldItalics}`,
+          },
+        })
+    )
   })
 }
 
