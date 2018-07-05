@@ -6,12 +6,11 @@ import { HOST } from './env'
 
 export { render, extend }
 
-const _renderPdf = prop =>
-  fetch(`${prop.HOST}/pdf-render/MY-DOC.pdf`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: prop.data, templateId: prop.templateId }),
-  }).then(res => res.blob())
+const _renderPdf = prop => fetch(`${prop.HOST}/pdf-render/MY-DOC.pdf`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ data: prop.data, templateId: prop.templateId }),
+}).then(res => res.blob())
 
 const defaultProp = {
   HOST,
