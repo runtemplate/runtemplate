@@ -9,9 +9,13 @@ const util = {
 }
 
 export const render = (template, data) => {
-  if (template.render) {
-    const subTemplate = _.omit(template, 'render')
-    return template.render.call(util, data, subTemplate, util)
+  const templateRender = template.render
+  if (templateRender) {
+    if (typeof templateRender === 'function') {
+      const subTemplate = _.omit(template, 'render')
+      return templateRender.call(util, data, subTemplate, util)
+    }
+    return templateRender
   }
   if (template.layout) {
     return _.map(template.layout, k => {
@@ -23,15 +27,15 @@ export const render = (template, data) => {
 }
 util.render = render
 
-export const extend = (a, b) => {
-  if (typeof b === 'function') return b(a)
+export const extend = (a, b, depth = 0) => {
+  if (depth === 0 && typeof b === 'function') return b(a)
 
   if (typeof a === 'object' && !Array.isArray(a)) {
     return {
       ...b,
       ..._.mapValues(a, (subA, boxKey) => {
         const subB = b[subA.ibExtend || boxKey]
-        return subB ? extend(subA, subB) : subA
+        return subB ? extend(subA, subB, depth + 1) : subA
       }),
     }
   }

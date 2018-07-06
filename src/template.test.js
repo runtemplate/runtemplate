@@ -1,6 +1,11 @@
 import { render, extend } from './template'
 import defaultTemplate from './template.test-data'
 
+test('render function', () => {
+  const t1 = extend({ Addresses: { render: 'string' } }, { Addresses: { render: () => {} } })
+  expect(t1).toMatchObject({ Addresses: { render: 'string' } })
+})
+
 test('basic', () => {
   const t1 = extend({ Header: { Font_Size: 22 } }, defaultTemplate)
   expect(t1).toMatchObject({
