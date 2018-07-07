@@ -18,9 +18,11 @@ const serverFetch = (url, option, postProcessor) => tryCache(memoryPromises, url
   const cacheFilepath = Path.join(cacheDir, Path.basename(url))
   // api json return should have no extension, font file should have extension
   const isJsonFile = !Path.extname(url)
+  // console.log('> serverFetch', url)
   let memoryP = fetchJson(url, option)
     .then(async res => {
       if (isJsonFile) {
+        // console.log('> serverFetch then', isJsonFile, res)
         // json template
         await fse.outputFile(cacheFilepath, res)
         return JSONfn.parse(res)

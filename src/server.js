@@ -51,9 +51,9 @@ const _renderPdf = prop => prop.loadTemplate(prop).then(template => {
   return makePdf({ ...prop, pdfDefinition, template })
 })
 
-export const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.templateId}`, prop)
+export const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.templateId}?apiKey=${prop.apiKey}`, prop)
 
-export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}`, prop)
+export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?apiKey=${prop.apiKey}`, prop)
 
 const defaultProp = {
   loadTemplate,

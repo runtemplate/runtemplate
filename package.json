@@ -9,7 +9,7 @@
     "ibill": "bin/ibill.js"
   },
   "scripts": {
-    "dev": "rollup --config tool/rollup.config.js --watch",
+    "dev": "rollup --config tool/rollup.config.js --silent --watch",
     "build": "rollup --config tool/rollup.config.js --silent",
     "prepublish": "npm test && npm run eslint && npm run build",
     "eslint": "eslint src",
