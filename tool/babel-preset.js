@@ -14,7 +14,7 @@ module.exports = (api, option) => {
       'lodash',
       // '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-proposal-nullish-coalescing-operator',
-      '@babel/plugin-proposal-pipeline-operator',
+      ['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],
     ],
   }
 }
