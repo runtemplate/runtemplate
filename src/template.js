@@ -17,30 +17,32 @@ export const render = (template, data) => {
     }
     return templateRender
   }
+
   if (template.layout) {
     return _.map(template.layout, k => {
       const subTemplate = { ...template, ...template[k] }
       return util.render(subTemplate, data)
     })
   }
+
   return template
 }
+
 util.render = render
 
-export const extend = (a, b, depth = 0) => {
-  if (depth === 0 && typeof b === 'function') return b(a)
-
+export const extend = (a, b) => {
   if (typeof a === 'object' && !Array.isArray(a)) {
     return {
       ...b,
       ..._.mapValues(a, (subA, boxKey) => {
         const subB = b[subA.ibExtend || boxKey]
-        return subB ? extend(subA, subB, depth + 1) : subA
+        return subB ? extend(subA, subB) : subA
       }),
     }
   }
   return a
 }
+
 util.extend = extend
 
 export default util
