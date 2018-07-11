@@ -1,4 +1,5 @@
 import Path from 'path'
+import Url from 'url'
 import fse from 'fs-extra'
 import JSONfn from './json-fn'
 
@@ -15,10 +16,12 @@ const outputStream = (cacheFilepath, stream) => new Promise(resolve => {
 })
 
 const serverFetch = (url, option, postProcessor) => tryCache(memoryPromises, url, () => {
-  const cacheFilepath = Path.join(cacheDir, Path.basename(url))
+  const urlObj = new Url.URL(url)
+  const cacheFilepath = Path.join(cacheDir, Path.basename(urlObj.pathname))
   // api json return should have no extension, font file should have extension
-  const isJsonFile = !Path.extname(url)
-  // console.log('> serverFetch', url)
+  const ext = Path.extname(urlObj.pathname)
+  const isJsonFile = !ext || ext === '.json'
+  // console.log('> serverFetch', url, cacheFilepath)
   let memoryP = fetchJson(url, option)
     .then(async res => {
       if (isJsonFile) {
