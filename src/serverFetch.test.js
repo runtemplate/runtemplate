@@ -9,7 +9,7 @@ beforeAll(async () => {
 
 test('serverFetch .ttf file', async () => {
   fetch.once(fs.createReadStream(__filename), { headers: { 'Content-Type': 'pdf' } })
-  await cacheFetch('HOST/font/test.ttf')
+  await cacheFetch('http://HOST/font/test.ttf')
   expect(fs.existsSync(`${cacheDir}/test.ttf`)).toBe(true)
 })
 
@@ -17,13 +17,13 @@ test('serverFetch api json', async () => {
   const data = { json: 'data', render: () => 'result' }
   const json = JSONfn.stringify(data)
   fetch.once(json)
-  await cacheFetch('HOST/api/template/test-template-id')
+  await cacheFetch('http://HOST/api/template/test-template-id')
   expect(await fs.readFile(`${cacheDir}/test-template-id`, 'utf8')).toEqual(json)
 
   // offline
   clearMemory()
   fetch.mockRejectOnce(new Error('Offline'))
-  const offline = await cacheFetch('HOST/api/template/test-template-id')
+  const offline = await cacheFetch('http://HOST/api/template/test-template-id')
   expect(`${offline.render}`).toEqual(`${data.render}`)
 })
 
