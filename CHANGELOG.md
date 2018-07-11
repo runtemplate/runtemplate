@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.6"></a>
+## [0.6.6](https://github.com/ibill-today/ibill-js/compare/v0.6.5...v0.6.6) (2018-07-11)
+
+
+### Bug Fixes
+
+* add apiKey to fetch url ([f05fb9e](https://github.com/ibill-today/ibill-js/commit/f05fb9e))
+* add main and base definitions ([2121f05](https://github.com/ibill-today/ibill-js/commit/2121f05))
+* npm ignore examples and fonts ([5eaa35c](https://github.com/ibill-today/ibill-js/commit/5eaa35c))
+* remove function base extend ([7ee1a1b](https://github.com/ibill-today/ibill-js/commit/7ee1a1b))
+
+
+
 <a name="0.6.5"></a>
 ## [0.6.5](https://github.com/ibill-today/ibill-js/compare/v0.6.4...v0.6.5) (2018-07-06)
 
