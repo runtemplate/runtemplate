@@ -47,7 +47,7 @@ export const makePdf = prop => getPrinter(prop).then(printer => {
 })
 
 const _renderPdf = prop => prop.loadTemplate(prop).then(template => {
-  const pdfDefinition = render(template.extended, prop.data)
+  const pdfDefinition = render(prop.data, template.extended)
   return makePdf({ ...prop, pdfDefinition, template })
 })
 

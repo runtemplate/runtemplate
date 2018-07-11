@@ -53,7 +53,7 @@ export default {
                 style: ['itemsHeader', 'center'],
               },
             ],
-            ...util.map(data.items, item => util.render(template.Item, item)),
+            ...util.map(data.items, item => util.render(item, template.Item)),
           ],
         },
       }
@@ -70,6 +70,6 @@ export default {
   layout: ['Header', 'Table', 'Total', 'Notes'],
 
   render(data, template, util) {
-    return { content: util.render(template, data) }
+    return { content: util.render(data, template) }
   },
 }

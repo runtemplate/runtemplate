@@ -8,21 +8,20 @@ const util = {
   dateFnsFormat,
 }
 
-export const render = (template, data) => {
+// const specialKeys = ['render', 'layout', 'baseKey', '_base']
+
+export const render = (data, template) => {
   const templateRender = template.render
   if (templateRender) {
     if (typeof templateRender === 'function') {
-      const subTemplate = _.omit(template, 'render')
-      return templateRender.call(util, data, subTemplate, util)
+      return templateRender.call(util, data, _.omit(template, 'render'), util)
     }
     return templateRender
   }
 
+  // render list of sub-template which ordered by layout
   if (template.layout) {
-    return _.map(template.layout, k => {
-      const subTemplate = { ...template, ...template[k] }
-      return util.render(subTemplate, data)
-    })
+    return _.map(template.layout, k => render(data, { ...template, ...template[k] }))
   }
 
   return template
@@ -30,17 +29,27 @@ export const render = (template, data) => {
 
 util.render = render
 
-export const extend = (a, b) => {
-  if (typeof a === 'object' && !Array.isArray(a)) {
+const _extendDeep = (a, b) => {
+  if (b && typeof a === 'object' && !Array.isArray(a)) {
     return {
       ...b,
-      ..._.mapValues(a, (subA, boxKey) => {
-        const subB = b[subA.ibExtend || boxKey]
-        return subB ? extend(subA, subB) : subA
+      _base: b,
+      ..._.mapValues(a, (subA, key) => {
+        const subB = b[subA.baseKey || key]
+        return subB ? _extendDeep(subA, subB) : subA
       }),
     }
   }
   return a
+}
+export const extend = (a, b) => {
+  const template = _extendDeep(a, b)
+  // handle main block
+  const main = template.main || template.Main
+  if (main) {
+    return { ..._.omit(template, 'main', 'Main'), ...main }
+  }
+  return template
 }
 
 util.extend = extend

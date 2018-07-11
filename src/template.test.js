@@ -1,6 +1,36 @@
 import { render, extend } from './template'
 import defaultTemplate from './template.test-data'
 
+test('render base', () => {
+  const t = extend(
+    {
+      Main: {
+        Page_Size: 'A5',
+        render: (data, template, util) => {
+          const baseRenderRet = util.render(data, { ...template, render: template._base.render })
+          return `Wrap>>${baseRenderRet}<<`
+        },
+      },
+    },
+    {
+      Main: {
+        render: (data, template) => template.Page_Size,
+      },
+    }
+  )
+  expect(render({}, t)).toBe('Wrap>>A5<<')
+})
+
+test('render main', () => {
+  const t = extend({
+    Main: {
+      Page_Size: 'A5',
+      render: (data, template) => template.Page_Size,
+    },
+  })
+  expect(render({}, t)).toBe('A5')
+})
+
 test('render function', () => {
   const t1 = extend({ Addresses: { render: 'string' } }, { Addresses: { render: () => {} } })
   expect(t1).toMatchObject({ Addresses: { render: 'string' } })
@@ -51,7 +81,7 @@ test('basic', () => {
       { style: { alignment: 'center', margin: [0, 5, 0, 5] }, text: '$1' },
     ],
   ]
-  const o1 = render(t1, data)
+  const o1 = render(data, t1)
   expect(o1.content[0].columns[1][0].style[1]).toEqual({ fontSize: 22 })
   expect(o1.content[0].columns[1][1].stack[2]).toEqual({
     columns: [{ style: 'invoiceSubTitle', text: 'Due Date', width: '*' }, { style: 'invoiceSubValue', text: '2018-04-15', width: 100 }],
@@ -90,7 +120,7 @@ test('basic', () => {
     ],
   })
 
-  const out = render(extend({ Header: { fontSize: 22 } }, defaultTemplate), data)
+  const out = render(data, extend({ Header: { fontSize: 22 } }, defaultTemplate))
   expect(out.content[1].table.body).toMatchObject(dataOut)
 
   expect(out.content[3][1].text).toEqual('Some notes goes here \n Notes second line')
