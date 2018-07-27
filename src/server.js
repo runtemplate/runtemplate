@@ -2,14 +2,14 @@ import _ from 'lodash'
 import PdfmakePrinter from 'pdfmake'
 import Stream from 'stream'
 
+import Json from './json-fn'
 import { render, extend } from './template'
 import { tryCache } from './common'
 import cacheFetch, { cacheDir } from './serverFetch'
 import { HOST } from './env'
-import JSONfn, { toJSON, fromJSON } from './json-fn'
 
 export {
-  render, extend, cacheFetch, JSONfn, toJSON, fromJSON,
+  render, extend, cacheFetch, Json,
 }
 
 // const debug = obj => {

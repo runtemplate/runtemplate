@@ -1,10 +1,11 @@
 import fetch from 'isomorphic-fetch'
 
+import Json from './json-fn'
 import { render, extend } from './template'
 
 import { HOST } from './env'
 
-export { render, extend }
+export { render, extend, Json }
 
 const _renderPdf = prop => fetch(`${prop.HOST}/pdf-render/MY-DOC.pdf`, {
   method: 'POST',
