@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.9"></a>
+## [0.6.9](https://github.com/ibill-today/ibill-js/compare/v0.6.8...v0.6.9) (2018-07-27)
+
+
+### Bug Fixes
+
+* better json-fn with parseObject function ([c34eef3](https://github.com/ibill-today/ibill-js/commit/c34eef3))
+
+
+
 <a name="0.6.8"></a>
 ## [0.6.8](https://github.com/ibill-today/ibill-js/compare/v0.6.7...v0.6.8) (2018-07-11)
 
