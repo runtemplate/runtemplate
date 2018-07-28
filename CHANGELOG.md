@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.10"></a>
+## [0.6.10](https://github.com/ibill-today/ibill-js/compare/v0.6.9...v0.6.10) (2018-07-28)
+
+
+### Bug Fixes
+
+* upgrade ([83b357a](https://github.com/ibill-today/ibill-js/commit/83b357a))
+
+
+
 <a name="0.6.9"></a>
 ## [0.6.9](https://github.com/ibill-today/ibill-js/compare/v0.6.8...v0.6.9) (2018-07-27)
 
