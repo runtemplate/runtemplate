@@ -46,14 +46,17 @@ export const makePdf = prop => getPrinter(prop).then(printer => {
   return pdfStream
 })
 
+// required: data, fontDir
+// load from web: templateId, auth
+// load from db: loadTemplate, loadFont,
 const _renderPdf = prop => prop.loadTemplate(prop).then(template => {
   const pdfDefinition = render(prop.data, template.extended)
   return makePdf({ ...prop, pdfDefinition, template })
 })
 
-export const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.templateId}?apiKey=${prop.apiKey}`, prop)
+export const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.template || prop.templateId}?auth=${prop.auth}`, prop)
 
-export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?apiKey=${prop.apiKey}`, prop)
+export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?auth=${prop.auth}`, prop)
 
 const defaultProp = {
   loadTemplate,
@@ -62,5 +65,4 @@ const defaultProp = {
   fontDir: cacheDir,
 }
 
-// prop = { templateId, data, loadTemplate, loadFont }
 export const renderPdf = _prop => _renderPdf({ ...defaultProp, ..._prop })
