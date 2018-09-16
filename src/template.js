@@ -1,11 +1,14 @@
 import _ from 'lodash'
 import { format as dateFnsFormat } from 'date-fns'
+import marked from 'marked'
 
 const util = {
+  // NOTE because of babel-plugin-lodash, need to use _.map in code, instead of _.pick(_, 'map', ...)
   map: _.map,
   toString: _.toString,
   sumBy: _.sumBy,
   dateFnsFormat,
+  marked,
 }
 
 // const specialKeys = ['render', 'layout', 'baseKey', '_base']
