@@ -5,7 +5,9 @@
 ![npm](https://img.shields.io/npm/dt/runtemplate.svg?maxAge=2592000&style=flat-square)
 ![npm](https://img.shields.io/npm/l/runtemplate.svg?style=flat-square)
 
-** render PDF templates that your customers can edit via [https://runtemplate.com server](https://runtemplate.com) **
+**Still in Development. Not Yet Complete**
+
+render PDF templates that your customers can edit via [https://runtemplate.com server](https://runtemplate.com)
 
 ## Features
 
