@@ -1,6 +1,6 @@
 {
   "name": "runtemplate",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "self-serve template edit and render engine for your customers or projects",
   "main": "./build/cjs/index.js",
   "module": "./build/index.js",
