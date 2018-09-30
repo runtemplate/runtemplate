@@ -1,6 +1,5 @@
 /yarn.lock
-/browser
-/server
+/build
 /.cache
 
 
