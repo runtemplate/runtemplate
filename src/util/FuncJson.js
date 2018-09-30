@@ -2,7 +2,7 @@ import _ from 'lodash'
 
 // copy from https://github.com/vkiryukhin/jsonfn
 
-const toJSON = value => {
+export const toJson = value => {
   if (value instanceof Function || typeof value === 'function') {
     const fnBody = value.toString()
     if (fnBody.length < 8 || fnBody.substring(0, 8) !== 'function') {
@@ -14,7 +14,7 @@ const toJSON = value => {
   return value
 }
 
-const fromJSON = value => {
+export const fromJson = value => {
   if (typeof value === 'string' && value.length >= 8) {
     const prefix = value.substring(0, 8)
     if (prefix === 'function') {
@@ -29,23 +29,14 @@ const fromJSON = value => {
   return value
 }
 
-const parseObject = value => {
-  if (value) {
-    const type = typeof value
-    if (type === 'string') {
-      return fromJSON(value)
-    }
-    if (type === 'object' && !Array.isArray(value)) {
-      return _.mapValues(value, parseObject)
-    }
-  }
-  return value
-}
+const walk = (obj, cb) => _.transform(obj, (result, value, key) => {
+  result[key] = typeof value === 'object' ? walk(value, cb) : cb(value)
+})
 
-export default {
-  toJSON,
-  fromJSON,
-  parseObject,
-  stringify: obj => JSON.stringify(obj, (key, value) => toJSON(value)),
-  parse: str => JSON.parse(str, (key, value) => fromJSON(value)),
-}
+export const toJsonDeep = obj => walk(obj, toJson)
+
+export const fromJsonDeep = obj => walk(obj, fromJson)
+
+export const stringify = obj => JSON.stringify(obj, (key, value) => toJson(value))
+
+export const parse = str => JSON.parse(str, (key, value) => fromJson(value))

@@ -2,20 +2,10 @@ import _ from 'lodash'
 import PdfmakePrinter from 'pdfmake'
 import Stream from 'stream'
 
-import Json from './json-fn'
-import { render, extend } from './template'
-import { tryCache } from './common'
+import { render } from '../template'
+import { tryCache } from '../util'
 import cacheFetch, { cacheDir } from './serverFetch'
-import { HOST } from './env'
-
-export {
-  render, extend, cacheFetch, Json,
-}
-
-// const debug = obj => {
-//   console.log(obj)
-//   return obj
-// }
+import { HOST } from '../env'
 
 const _printers = {}
 const getPrinter = prop => {
@@ -38,7 +28,7 @@ const getPrinter = prop => {
   })
 }
 
-export const makePdf = prop => getPrinter(prop).then(printer => {
+const makePdf = prop => getPrinter(prop).then(printer => {
   const pdfKitDocument = printer.createPdfKitDocument(prop.pdfDefinition)
   const pdfStream = pdfKitDocument.pipe(Stream.PassThrough())
   pdfKitDocument.end()
@@ -47,16 +37,17 @@ export const makePdf = prop => getPrinter(prop).then(printer => {
 })
 
 // required: data, fontDir
-// load from web: templateId, auth
+// load from web: code, auth
 // load from db: loadTemplate, loadFont,
 const _renderPdf = prop => prop.loadTemplate(prop).then(template => {
   const pdfDefinition = render(prop.data, template.extended)
+  // console.log(JSON.stringify(pdfDefinition.content, null, '  '))
   return makePdf({ ...prop, pdfDefinition, template })
 })
 
-export const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.template || prop.templateId}?auth=${prop.auth}`, prop)
+const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.template || prop.code}?auth=${prop.auth}`, prop)
 
-export const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?auth=${prop.auth}`, prop)
+const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?auth=${prop.auth}`, prop)
 
 const defaultProp = {
   loadTemplate,
@@ -65,4 +56,4 @@ const defaultProp = {
   fontDir: cacheDir,
 }
 
-export const renderPdf = _prop => _renderPdf({ ...defaultProp, ..._prop })
+export default _prop => _renderPdf({ ...defaultProp, ..._prop })

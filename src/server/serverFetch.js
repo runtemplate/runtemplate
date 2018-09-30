@@ -1,11 +1,12 @@
 import Path from 'path'
 import Url from 'url'
 import fse from 'fs-extra'
-import JSONfn from './json-fn'
+import appRootPath from 'app-root-path'
 
-import { fetchJson, tryCache } from './common'
+import { parse } from '../util/FuncJson'
+import { fetchJson, tryCache } from '../util'
 
-export const cacheDir = Path.join(__dirname, '../.cache')
+export const cacheDir = appRootPath.resolve('.cache')
 
 let memoryPromises = {}
 
@@ -28,7 +29,7 @@ const serverFetch = (url, option, postProcessor) => tryCache(memoryPromises, url
         // console.log('> serverFetch then', isJsonFile, res)
         // json template
         await fse.outputFile(cacheFilepath, res)
-        return JSONfn.parse(res)
+        return parse(res)
       }
       // stream font
       await outputStream(cacheFilepath, res.body)
@@ -37,7 +38,7 @@ const serverFetch = (url, option, postProcessor) => tryCache(memoryPromises, url
     .catch(err => {
       if (isJsonFile) {
         // json template
-        return fse.readFile(cacheFilepath, 'utf8').then(cache => (cache ? JSONfn.parse(cache) : Promise.reject(err)))
+        return fse.readFile(cacheFilepath, 'utf8').then(cache => (cache ? parse(cache) : Promise.reject(err)))
       }
       // stream font
       return fse.exists(cacheFilepath).then(cache => cache || Promise.reject(err))

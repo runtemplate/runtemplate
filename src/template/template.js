@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { format as dateFnsFormat } from 'date-fns'
-import marked from 'marked'
+import mdToPdf from './mdToPdf'
 
 const util = {
   // NOTE because of babel-plugin-lodash, need to use _.map in code, instead of _.pick(_, 'map', ...)
@@ -8,7 +8,7 @@ const util = {
   toString: _.toString,
   sumBy: _.sumBy,
   dateFnsFormat,
-  marked,
+  renderText: mdToPdf,
 }
 
 // const specialKeys = ['render', 'layout', 'baseKey', '_base']

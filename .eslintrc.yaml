@@ -69,6 +69,7 @@ rules:
   no-unused-expressions: warn
   no-unused-labels: warn
   no-unused-vars: warn
+  object-curly-newline: off
   prefer-const: warn
   prefer-destructuring: off
   quotes:
