@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.2"></a>
+## [0.8.2](https://github.com/runtemplate/runtemplate/compare/v0.9.0...v0.8.2) (2018-09-30)
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/runtemplate/runtemplate/compare/v0.6.11...v0.9.0) (2018-09-30)
 
