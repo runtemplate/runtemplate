@@ -7,7 +7,7 @@ const server = http.createServer((req, res) => {
   renderPdf({
     templateId: 'my-template-id',
     data,
-    HOST: process.env.IBILL_API || 'https://ibill.today',
+    HOST: process.env.IBILL_API || 'https://runtemplate.com',
   }).then(pdfStream => {
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/pdf')

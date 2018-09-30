@@ -2,6 +2,6 @@
 
 require('@babel/register')
 
-const mod = require('./ibill-server')
+const mod = require('./runtemplate-server')
 
 module.exports = mod.default || mod

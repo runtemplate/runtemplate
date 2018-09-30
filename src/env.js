@@ -1,1 +1,1 @@
-export const HOST = 'https://ibill.today'
+export const HOST = 'https://runtemplate.com'
