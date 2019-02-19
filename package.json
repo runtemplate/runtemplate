@@ -1,81 +1,49 @@
 {
-  "name": "runtemplate",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "self-serve template edit and render engine for your customers or projects",
-  "main": "./build/cjs/index.js",
-  "module": "./build/index.js",
-  "browser": "./browser/cjs/index.js",
+  "main": "index.js",
+  "module": "module.js",
+  "browser": "build/browser.js",
   "bin": {
     "runtemplate": "bin/runtemplate.js"
   },
   "scripts": {
-    "dev": "npm run build:es6 -- --watch",
-    "build": "run-p build:*",
-    "build:cjs": "BABEL_ENV=cjs babel src --out-dir build/cjs --ignore '**/test/**,**/**.test.js'",
-    "build:es6": "BABEL_ENV=es6 babel src --out-dir build --ignore '**/test/**,**/**.test.js'",
-    "prepublish": "npm test && npm run eslint && npm run build",
-    "eslint": "eslint src",
+    "clean": "del build",
+    "prebuild": "npm run clean",
+    "build": "webpack --config-register esm",
+    "start": "webpack --config-register esm --watch",
+    "prepublishOnly": "npm run build && npm test",
     "test": "jest"
   },
-  "babel": {
-    "presets": [
-      "./tool/babel-preset"
-    ]
-  },
-  "jest": {
-    "testURL": "http://localhost",
-    "setupFiles": [
-      "./tool/jest-setup.js"
-    ],
-    "roots": [
-      "<rootDir>/src"
-    ]
-  },
   "dependencies": {
-    "@babel/register": "^7.0.0",
     "app-root-path": "^2.1.0",
-    "date-fns": "^1.29.0",
-    "fs-extra": "^7.0.0",
-    "handlebars": "^4.0.12",
+    "date-fns": "1.30.1",
+    "fast-json-patch": "^2.0.7",
+    "fs-extra": "^7.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "json5": "^2.0.1",
-    "koa": "^2.5.3",
+    "json-e-customizable": "^3.0.1",
+    "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
-    "pdfmake": "^0.1.38"
+    "path-parse": "^1.0.6",
+    "pdfmake": "0.1.51"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "7.0.1",
     "@babel/node": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "7.0.0",
-    "@babel/plugin-proposal-export-default-from": "7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "7.0.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "7.0.0",
     "@babel/preset-env": "7.0.0",
-    "@babel/preset-react": "7.0.0",
     "babel-core": "^7.0.0-0",
-    "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
+    "babel-loader": "^8.0.5",
     "babel-plugin-lodash": "3.3.4",
-    "eslint": "5.6.0",
-    "eslint-config-airbnb": "17.1.0",
-    "eslint-plugin-babel": "5.2.0",
-    "eslint-plugin-dependencies": "2.4.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jest": "21.22.0",
-    "eslint-plugin-jsx-a11y": "6.1.1",
-    "eslint-plugin-lodash": "2.7.0",
-    "eslint-plugin-react": "7.11.1",
+    "del-cli": "^1.1.0",
+    "esm": "^3.2.4",
     "jest": "23.6.0",
-    "jest-fetch-mock": "^1.6.6",
-    "nodemon": "^1.18.4",
-    "npm-run-all": "^4.1.3",
-    "shelljs": "0.8.2"
+    "jest-fetch-mock": "^2.1.0",
+    "webpack": "4.29.3",
+    "webpack-cli": "3.2.3"
   },
   "repository": {
     "type": "git",
@@ -93,5 +61,6 @@
   "bugs": {
     "url": "https://github.com/runtemplate/runtemplate/issues"
   },
-  "homepage": "https://github.com/runtemplate/runtemplate#readme"
+  "homepage": "https://github.com/runtemplate/runtemplate#readme",
+  "name": "runtemplate"
 }
