@@ -5,58 +5,54 @@
 ![npm](https://img.shields.io/npm/dt/runtemplate.svg?maxAge=2592000&style=flat-square)
 ![npm](https://img.shields.io/npm/l/runtemplate.svg?style=flat-square)
 
-**Still in Development. Not Yet Complete**
+**Beta Version**
 
-render PDF templates that your customers can edit via [https://runtemplate.com server](https://runtemplate.com)
+The easiest to use pdf template editor and renderer. Even non-techs can edit!
+
+[runtemplate.com](https://runtemplate.com) is the online pdf template editor.
 
 ## Features
 
-- Support offline mode, in which, still can render even runtemplate.com server is down (template should be cached)
-- Your (multi-tenancy) customers can use our self-serve editor to edit, upload image and preview template
-- Support browser PDF rendering
+- start microservice or middleware in your server
+- smartly cache template from cloud
+- render pdf in local microservice (work even network is disconnected)
+- Non-developers can edit via online editor and microservice will get updated
 - based on pdfmake and pdfkit
 
 ## Usage
 
-CLI server
+microservice
 
 ```
 npm install --global runtemplate
 runtemplate
 ```
 
-example node.js server
+middleware
 
 ```js
-import http from "http";
-import { serverRenderPdf } from "runtemplate";
+import { pdfMiddleware } from 'runtemplate'
 
-http
-  .createServer((req, res) => {
-    serverRenderPdf({
-      template: "my-template-id",
-      data
-    }).then(pdfStream => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type", "application/pdf");
-      pdfStream.pipe(res);
-    });
-  })
-  .listen(8899, "0.0.0.0");
-```
+const response = await pdfMiddleware({
+  method: request.method,
+  path: request.path,
+  query: request.query,
+  reqBody: request.body,
 
-example koa server
+  // optional
+  saveOutput: async output => {
+    cacheTable.set(output.code, output)
+    return output
+  },
+  loadOutput: async ({ code }) => {
+    return cacheTable.get(code).body
+  },
+})
+// Use method=POST to generate pdf
+// response.body = { url, code, ... }
+// And http GET the response url
 
-```js
-import Koa from "koa";
-import { serverRenderPdf } from "runtemplate";
-
-const app = new Koa();
-app.use(async ctx => {
-  const pdfStream = await renderPdf({ template: "my-template-id", data });
-  ctx.type = "application/pdf";
-  ctx.body = pdfStream;
-});
-
-app.listen(8899, "0.0.0.0");
+// if method=GET
+// response.type = 'application/pdf'
+// response.body = pdf stream
 ```

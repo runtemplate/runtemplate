@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import LRU from 'lru-cache'
 
 import { parseTemplateCode, formatTemplateCode } from '../util/templateCode'
 import serverRenderPdf from './serverRenderPdf'
@@ -13,6 +14,16 @@ const parseJson = str => {
   }
 }
 
+const cacheTable = new LRU(100)
+const defaultSaveOutput = async output => {
+  cacheTable.set(output.code, output)
+  return output
+}
+const defaultOutput = async ({ code }) => {
+  // console.log(code, outputCaches)
+  return cacheTable.get(code).body
+}
+
 const PATH_PREFIX = '/pdf/'
 export const pdfMiddleware = async ({
   method,
@@ -25,8 +36,8 @@ export const pdfMiddleware = async ({
   loadFont,
   renderProps,
 
-  saveOutput,
-  loadOutput,
+  saveOutput = defaultSaveOutput,
+  loadOutput = defaultOutput,
 }) => {
   if (!_.startsWith(path, PATH_PREFIX)) return null
 

@@ -8,8 +8,6 @@ const app = new Koa()
 
 app.use(bodyParser())
 
-const outputCaches = {}
-
 app.use(async ctx => {
   const {
     method,
@@ -23,16 +21,6 @@ app.use(async ctx => {
     path,
     query,
     reqBody,
-
-    saveOutput: async output => {
-      outputCaches[output.code] = output
-      // console.log(outputCaches)
-      return output
-    },
-    loadOutput: async ({ code }) => {
-      // console.log(code, outputCaches)
-      return outputCaches[code].body
-    },
   })
   Object.assign(ctx, ret)
 })
