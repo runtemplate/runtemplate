@@ -25,9 +25,13 @@ app.use(async ctx => {
   Object.assign(ctx, ret)
 })
 
-// listen to HOST and PORT
-const PORT = 8899
-const HOST = '0.0.0.0'
-app.listen(PORT, HOST, () => {
-  console.log(`runtemplate server: http://${HOST}:${PORT}`)
-})
+if (!module.parent) {
+  // listen to HOST and PORT
+  const PORT = 8899
+  const HOST = '0.0.0.0'
+  app.listen(PORT, HOST, () => {
+    console.log(`runtemplate server: http://${HOST}:${PORT}`)
+  })
+}
+
+module.exports = app

@@ -1,5 +1,5 @@
 {
-  "version": "0.8.4",
+  "version": "0.8.7",
   "description": "The easiest to use pdf template editor and renderer. Even non-techs can edit!",
   "main": "index.js",
   "module": "module.js",
@@ -21,15 +21,18 @@
     "esm": "^3.2.6",
     "fast-json-patch": "^2.0.7",
     "fs-extra": "^7.0.1",
+    "got": "9.6.0",
     "isomorphic-fetch": "^2.2.1",
     "json-e-customizable": "^3.0.1",
+    "keyv": "https://github.com/lukechilds/keyv",
+    "keyv-file": "0.1.11",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "lodash": "^4.17.11",
-    "lru-cache": "5.1.1",
     "markdown-it": "^8.4.2",
     "path-parse": "^1.0.6",
-    "pdfmake": "0.1.53"
+    "pdfmake": "0.1.53",
+    "raw-body": "2.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -41,6 +44,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-lodash": "3.3.4",
     "del-cli": "^1.1.0",
+    "delay": "4.1.0",
     "jest": "24.1.0",
     "jest-fetch-mock": "^2.1.1",
     "webpack": "4.29.5",

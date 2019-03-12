@@ -6,6 +6,7 @@ import { renderTemplate } from '../template'
 import { tryCache } from '../util/fetchUtil'
 import cacheFetch, { cacheDir } from './serverFetch'
 import { HOST } from '../env'
+import { getTemplate } from './gotCaches'
 
 const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?auth=${prop.auth}`, prop)
 
@@ -39,7 +40,7 @@ const makePdf = prop => getPrinter(prop).then(printer => {
   return pdfStream
 })
 
-const loadTemplate = prop => cacheFetch(`${prop.HOST}/api/template/${prop.templateCode || prop.template || prop.code}?auth=${prop.auth}`, prop)
+const loadTemplate = prop => getTemplate(prop.templateCode || prop.template || prop.code, prop)
 
 // required: data, fontDir
 // load from web: code, auth

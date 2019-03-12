@@ -1,10 +1,12 @@
 import _ from 'lodash'
-import LRU from 'lru-cache'
 
 import { parseTemplateCode, formatTemplateCode } from '../util/templateCode'
 import serverRenderPdf from './serverRenderPdf'
+import { getOutput, setOutput } from './gotCaches'
 
 export { serverRenderPdf }
+
+const HOST = process.env.RUNTEMPLATE_HOST || 'https://runtemplate.com'
 
 const parseJson = str => {
   try {
@@ -12,16 +14,6 @@ const parseJson = str => {
   } catch (err) {
     return undefined
   }
-}
-
-const cacheTable = new LRU(100)
-const defaultSaveOutput = async output => {
-  cacheTable.set(output.code, output)
-  return output
-}
-const defaultOutput = async ({ code }) => {
-  // console.log(code, outputCaches)
-  return cacheTable.get(code).body
 }
 
 const PATH_PREFIX = '/pdf/'
@@ -36,8 +28,8 @@ export const pdfMiddleware = async ({
   loadFont,
   renderProps,
 
-  saveOutput = defaultSaveOutput,
-  loadOutput = defaultOutput,
+  saveOutput = setOutput,
+  loadOutput = getOutput,
 }) => {
   if (!_.startsWith(path, PATH_PREFIX)) return null
 
@@ -52,7 +44,7 @@ export const pdfMiddleware = async ({
   let httpBody
   if (data) {
     httpBody = await serverRenderPdf({
-      HOST: process.env.RUNTEMPLATE_HOST || 'https://runtemplate.com',
+      HOST,
       ...renderProps,
       templateCode,
       loadTemplate,
@@ -61,24 +53,18 @@ export const pdfMiddleware = async ({
       data,
     })
   } else {
-    httpBody = await loadOutput({ code: outputCode })
+    httpBody = await loadOutput(outputCode, { auth })
   }
 
   const res = {}
   if (method === 'POST') {
-    const outputDoc = await saveOutput({
-      ...codeObj,
-      templateCode,
-      code: outputCode,
-      body: httpBody,
-    })
+    await saveOutput(outputCode, httpBody, { ...codeObj, templateCode, auth, data })
     res.body = {
       url: `${PATH_PREFIX}${outputCode}?auth=${auth || ''}`,
       templateCode,
       code: outputCode,
-      _id: _.get(outputDoc, '_id'),
     }
-  } else {
+  } else if (httpBody) {
     res.body = httpBody
     res.type = 'application/pdf'
   }

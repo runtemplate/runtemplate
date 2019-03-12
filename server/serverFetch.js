@@ -27,8 +27,8 @@ const serverFetch = (url, option, postProcessor) => tryCache(memoryPromises, url
   // console.log('> serverFetch', url, cacheFilepath)
   let memoryP = fetchData(url, { parseType: isJsonFile ? 'text' : null, ...option })
     .then(async res => {
+      console.log(`Fetched ${url}`)
       if (isJsonFile) {
-        // console.log('> serverFetch then', isJsonFile, res)
         // json template
         await fse.outputFile(cacheFilepath, res)
         return parse(res)
@@ -38,6 +38,7 @@ const serverFetch = (url, option, postProcessor) => tryCache(memoryPromises, url
       return true
     })
     .catch(err => {
+      console.log(`Fetch ${url} fail, fallback to ${cacheFilepath}`)
       if (isJsonFile) {
         // json template
         return fse.readFile(cacheFilepath, 'utf8').then(cache => (cache ? parse(cache) : Promise.reject(err)))

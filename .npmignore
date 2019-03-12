@@ -4,3 +4,4 @@ tmp-*
 /src
 /tool
 /examples
+*.md

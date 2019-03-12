@@ -56,3 +56,17 @@ const response = await pdfMiddleware({
 // response.type = 'application/pdf'
 // response.body = pdf stream
 ```
+
+example http POST
+
+```
+http://localhost:8899/pdf/demo/new__Receipt-Number?auth=YOUR_AUTH_OR_EMPTY
+
+{"data":{"number":"Receipt-Number","timeAt":"2019-02-18T15:31:08.067Z","items":[{"type":"Product","name":"A","quantity":1,"price":12},{"type":"Product","name":"B","quantity":1,"price":1}]}}'
+```
+
+example http GET
+
+```
+http://localhost:8899/pdf/demo/new__Receipt-Number?auth=YOUR_AUTH_OR_EMPTY
+```
