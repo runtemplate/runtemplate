@@ -1,6 +1,18 @@
 import _ from 'lodash'
 import 'isomorphic-fetch'
 
+// const syncMem = (promises, func) => (key, ...args) => {
+//   const oldPromise = promises[key]
+//   if (oldPromise) return oldPromise
+//   const promise = func()
+//   promises[key] = promise
+//   // clean up
+//   promise.finally(() => {
+//     delete promises[key]
+//   })
+//   return promise
+// }
+
 export const tryCache = (cache, key, func) => {
   const c = cache[key]
   if (c) return c

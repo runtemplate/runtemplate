@@ -1,14 +1,14 @@
 import _ from 'lodash'
 import PdfmakePrinter from 'pdfmake'
 import Stream from 'stream'
+import rawBody from 'raw-body'
 
 import { renderTemplate } from '../template'
 import { tryCache } from '../util/fetchUtil'
-import cacheFetch, { cacheDir } from './serverFetch'
 import { HOST } from '../env'
-import { getTemplate } from './gotCaches'
+import { getTemplate, getFont, fontCacheDir } from './gotCaches'
 
-const loadFont = prop => cacheFetch(`${prop.HOST}/font/${prop.fontName}?auth=${prop.auth}`, prop)
+const loadFont = prop => getFont(prop.fontName, prop)
 
 const _printers = {}
 const getPrinter = prop => {
@@ -36,8 +36,8 @@ const makePdf = prop => getPrinter(prop).then(printer => {
   const pdfKitDocument = printer.createPdfKitDocument(prop.pdfDefinition)
   const pdfStream = pdfKitDocument.pipe(Stream.PassThrough())
   pdfKitDocument.end()
-  pdfStream.pdfKitDocument = pdfKitDocument
-  return pdfStream
+  // pdfStream.pdfKitDocument = pdfKitDocument
+  return rawBody(pdfStream)
 })
 
 const loadTemplate = prop => getTemplate(prop.templateCode || prop.template || prop.code, prop)
@@ -48,7 +48,7 @@ const loadTemplate = prop => getTemplate(prop.templateCode || prop.template || p
 export default _prop => {
   const prop = _.defaults(_.omitBy(_prop, _.isNull), {
     HOST,
-    fontDir: cacheDir,
+    fontDir: fontCacheDir,
   })
 
   return (prop.loadTemplate || loadTemplate)(prop).then(template => {

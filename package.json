@@ -1,5 +1,5 @@
 {
-  "version": "0.8.7",
+  "version": "0.8.8",
   "description": "The easiest to use pdf template editor and renderer. Even non-techs can edit!",
   "main": "index.js",
   "module": "module.js",
@@ -24,12 +24,12 @@
     "got": "9.6.0",
     "isomorphic-fetch": "^2.2.1",
     "json-e-customizable": "^3.0.1",
-    "keyv": "https://github.com/lukechilds/keyv",
-    "keyv-file": "0.1.11",
+    "keyv-lru-files": "1.0.2",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
+    "mem": "4.2.0",
     "path-parse": "^1.0.6",
     "pdfmake": "0.1.53",
     "raw-body": "2.3.3"

@@ -1,53 +1,65 @@
 import os from 'os'
+import Path from 'path'
 // import _ from 'lodash'
+import fse from 'fs-extra'
 import got from 'got'
-import Keyv from 'keyv'
-import KeyvFile from 'keyv-file'
+import mem from 'mem'
+import KeyvLrufiles from 'keyv-lru-files'
 import rawBody from 'raw-body'
 
 const HOST = process.env.RUNTEMPLATE_HOST || 'https://runtemplate.com'
 
-// long time-to-live, nearly won't delete cache
-const longTtl = 100 * 24 * 3600 * 1000
-// short invalid time to trigger re-get
-const INVALID_TTL = 10 * 60 * 1000
+const getCacheDir = namespace => `${os.tmpdir()}/runtemplate/${namespace}`
 
-// export for test only
-export const makeGet = (keyv, func, invalidTtl = INVALID_TTL) => {
-  const { namespace } = keyv.opts
-  // console.log(`aa: ${namespace}`)
-
-  return async (code, rest) => {
-    const rawCache = await keyv.get(code, { raw: true })
-    if (rawCache) {
-      const { value, expires } = rawCache
-      const invalidAt = expires - longTtl + invalidTtl
-      const isInvalid = Date.now() > invalidAt
-      console.info(`cache hit ${namespace}: ${code} (${isInvalid ? 'Invalided' : 'invalid'}:${new Date(invalidAt)})`)
-      if (!isInvalid) {
-        return value
-      }
-    }
-
-    const newValue = await func(code, rest)
-    console.info(`fetch ${namespace}: ${code}`)
-
-    await keyv.set(code, newValue)
-    return newValue
+const makeFileMap = namespace => {
+  const wantDir = getCacheDir(namespace)
+  fse.ensureDirSync(wantDir)
+  // TODO remove this if keyv-lru-files changed
+  const relativeDir = Path.relative(Path.join(require.main.filename, '..'), wantDir)
+  const fileMap = new KeyvLrufiles({
+    dir: relativeDir, // directory to store caches files
+    files: 1000, // maximum number of files
+    size: '1 GB', // maximum total file size
+    // interval of stale checks in minutes
+    check: process.env.NODE_ENV === 'test' ? false : 10,
+  })
+  const fixKey = key => key.replace(/\//g, '~~')
+  return {
+    ...fileMap,
+    get: key => fileMap.get(fixKey(key)),
+    set: (key, value) => {
+      console.info(`fileSet ${relativeDir}/${key}`)
+      return fileMap.set(fixKey(key), value)
+    },
   }
 }
 
-export const makeKeyv = namespace => {
-  return new Keyv({
-    ttl: longTtl,
-    namespace,
-    store: new KeyvFile({
-      // filename: `${os.tmpdir()}/keyv-file/default-rnd-${Math.random().toString(36).slice(2)}.json`, the file path to store the data
-      filename: `${os.tmpdir()}/runtemplate/${namespace}.json`,
-      // expiredCheckDelay: ms (default 24*3600*1000), check and remove expired data in each ms
-      // expiredCheckDelay: ttl,
-    }),
-  })
+// export for test only
+export const memAndFile = (namespace, asyncFunc, option = {}) => {
+  const memoryMap = option.cache || new Map()
+  const fileMap = makeFileMap(namespace)
+
+  const getMemory = mem(
+    async (key, ...args) => {
+      let ret
+      try {
+        ret = await asyncFunc(key, ...args)
+        await fileMap.set(key, ret)
+      } catch (err) {
+        console.error(err)
+        return fileMap.get(key, ret)
+      }
+      return ret
+    },
+    {
+      // short invalid time to trigger re-get
+      maxAge: 600000,
+      ...option,
+      cache: memoryMap,
+    }
+  )
+  Object.assign(getMemory, { memoryMap, fileMap })
+  return getMemory
 }
 
 const gotBuffer = (url, option) => got(url, { timeout: 3000, encoding: null, ...option }).then(r => r.body)
@@ -55,21 +67,26 @@ const gotJson = (url, option) => got(url, { timeout: 3000, json: true, ...option
 
 // -------------------------------------------------------------------------
 
-const outputKeyv = makeKeyv('output')
-
-// -------------------------------------------------------------------------
-
-export const getOutput = makeGet(outputKeyv, (code, rest) => gotBuffer(`${HOST}/pdf/${code}?auth=${rest.auth || ''}`))
-
+export const getOutput = memAndFile('output', (code, rest) => gotBuffer(`${HOST}/pdf/${code}?auth=${rest.auth || ''}`))
+const { memoryMap, fileMap } = getOutput
 export const setOutput = async (code, body, { auth, data }) => {
-  await outputKeyv.set(code, await rawBody(body))
+  body = await rawBody(body)
+  memoryMap.set(code, body)
+  fileMap.set(code, body)
   await got(`${HOST}/pdf/${code}?auth=${auth}`, { method: 'POST', body: { data }, json: true }).catch(err => console.error(err))
 }
 
-export const getFont = makeGet(makeKeyv('font'), (fontName, rest) => {
+// -------------------------------------------------------------------------
+
+export const getTemplate = memAndFile('template', (templateCode, rest) => {
+  return gotJson(`${HOST}/api/template/${templateCode}?auth=${rest.auth || ''}`)
+})
+
+// -------------------------------------------------------------------------
+
+export const fontCacheDir = getCacheDir('font')
+export const getFont = memAndFile('font', (fontName, rest) => {
   return gotBuffer(`${HOST}/font/${fontName}?auth=${rest.auth || ''}`)
 })
 
-export const getTemplate = makeGet(makeKeyv('template'), (templateCode, rest) => {
-  return gotJson(`${HOST}/api/template/${templateCode}?auth=${rest.auth || ''}`)
-})
+// -------------------------------------------------------------------------

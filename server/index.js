@@ -52,13 +52,13 @@ export const pdfMiddleware = async ({
       loadFont,
       data,
     })
+    await saveOutput(outputCode, httpBody, { ...codeObj, templateCode, auth, data })
   } else {
     httpBody = await loadOutput(outputCode, { auth })
   }
 
   const res = {}
   if (method === 'POST') {
-    await saveOutput(outputCode, httpBody, { ...codeObj, templateCode, auth, data })
     res.body = {
       url: `${PATH_PREFIX}${outputCode}?auth=${auth || ''}`,
       templateCode,
