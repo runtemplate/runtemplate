@@ -11,7 +11,12 @@ The easiest to use pdf template editor and renderer. Even non-techs can edit!
 
 [runtemplate.com](https://runtemplate.com) is the online pdf template editor.
 
-## Features
+## Online Editor Features
+
+- Upload logo and images
+- Support markdown
+
+## Standalone Server Features
 
 - start microservice or middleware in your server
 - smartly cache template from cloud
