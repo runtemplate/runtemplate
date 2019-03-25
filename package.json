@@ -1,5 +1,5 @@
 {
-  "version": "0.8.9",
+  "version": "0.8.10",
   "description": "The easiest to use pdf template editor and renderer. Even non-techs can edit!",
   "main": "index.js",
   "module": "module.js",
@@ -13,12 +13,12 @@
     "build": "webpack --config-register esm",
     "start": "webpack --config-register esm --watch",
     "prepublishOnly": "npm run build && npm test",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
-    "app-root-path": "^2.1.0",
+    "app-root-path": "^2.2.0",
     "date-fns": "1.30.1",
-    "esm": "^3.2.6",
+    "esm": "^3.2.20",
     "fast-json-patch": "^2.0.7",
     "fs-extra": "^7.0.1",
     "got": "9.6.0",
@@ -31,24 +31,24 @@
     "markdown-it": "^8.4.2",
     "mem": "4.2.0",
     "path-parse": "^1.0.6",
-    "pdfmake": "0.1.53",
+    "pdfmake": "0.1.54",
     "raw-body": "2.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
-    "@babel/core": "7.3.3",
+    "@babel/core": "7.4.0",
     "@babel/node": "^7.0.0",
-    "@babel/preset-env": "7.3.1",
+    "@babel/preset-env": "7.4.2",
     "babel-core": "^7.0.0-0",
-    "babel-jest": "24.1.0",
+    "babel-jest": "24.5.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-lodash": "3.3.4",
     "del-cli": "^1.1.0",
     "delay": "4.1.0",
-    "jest": "24.1.0",
+    "jest": "24.5.0",
     "jest-fetch-mock": "^2.1.1",
-    "webpack": "4.29.5",
-    "webpack-cli": "3.2.3"
+    "webpack": "4.29.6",
+    "webpack-cli": "3.3.0"
   },
   "repository": {
     "type": "git",
