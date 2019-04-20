@@ -1,6 +1,5 @@
 import _ from 'lodash'
 
-import { parseTemplateCode, formatTemplateCode } from '../util/templateCode'
 import serverRenderPdf from './serverRenderPdf'
 import { getOutput, setOutput } from './gotCaches'
 
@@ -8,6 +7,7 @@ export { serverRenderPdf }
 
 const HOST = process.env.RUNTEMPLATE_HOST || 'https://runtemplate.com'
 
+/* #region utils */
 const parseJson = str => {
   try {
     return str ? JSON.parse(str) : undefined
@@ -15,8 +15,10 @@ const parseJson = str => {
     return undefined
   }
 }
+/* #endregion */
 
-const PATH_PREFIX = '/pdf/'
+const parseReqPath = path => path.split('/').splice(-3)
+
 export const pdfMiddleware = async ({
   method,
   path,
@@ -31,39 +33,48 @@ export const pdfMiddleware = async ({
   saveOutput = setOutput,
   loadOutput = getOutput,
 }) => {
-  if (!_.startsWith(path, PATH_PREFIX)) return null
+  const [projectId, name, number] = parseReqPath(path)
+  // console.log('>>>', projectId, name, number)
 
-  const code = path.substr(PATH_PREFIX.length)
   const data = reqBody.data || parseJson(query.data)
   const { auth } = query
 
-  const codeObj = parseTemplateCode(code, true)
-  const templateCode = formatTemplateCode(codeObj)
-  const outputCode = formatTemplateCode(codeObj, true)
+  const templateId = [projectId, name].join('/')
+  const outputId = [projectId, name, number].join('/')
+
+  const prop = {
+    HOST,
+    ...renderProps,
+    loadTemplate,
+    fontDir,
+    loadFont,
+
+    projectId,
+    name,
+    number,
+    templateId,
+    outputId,
+    auth,
+    data,
+  }
 
   let httpBody
+  let outputUrl
   if (data) {
-    httpBody = await serverRenderPdf({
-      HOST,
-      ...renderProps,
-      templateCode,
-      loadTemplate,
-      fontDir,
-      loadFont,
-      data,
-    })
-    await saveOutput(outputCode, httpBody, { ...codeObj, templateCode, auth, data })
+    httpBody = await serverRenderPdf(prop)
+    outputUrl = await saveOutput(outputId, httpBody, prop)
   } else {
-    httpBody = await loadOutput(outputCode, { auth })
+    httpBody = await loadOutput(outputId, prop)
   }
 
   const res = {}
   if (method === 'POST') {
     res.body = {
-      url: `${PATH_PREFIX}${outputCode}?auth=${auth || ''}`,
-      templateCode,
-      code: outputCode,
+      url: _.isString(outputUrl) ? outputUrl : `${outputId}?auth=${auth || ''}`,
+      templateId,
+      outputId,
     }
+    res.type = 'application/json'
   } else if (httpBody) {
     res.body = httpBody
     res.type = 'application/pdf'

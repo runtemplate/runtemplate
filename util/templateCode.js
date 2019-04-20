@@ -7,7 +7,7 @@ const pathFormat = ({ dir, name, ext }) => `${dir}/${name}${ext}`
 // eslint-disable-next-line no-control-regex
 const pathReservedRegex = /[<>:"\\|?*\x00-\x1F]/g
 
-export const formatTemplateCode = ({ folder: dir, name, ext, number }, hasNumber) => {
+export const formatTemplateCode = ({ projectId: dir, name, ext, number }, hasNumber) => {
   if (hasNumber && number) {
     name = `${name}__${number}`
   }
@@ -17,7 +17,7 @@ export const formatTemplateCode = ({ folder: dir, name, ext, number }, hasNumber
 export const parseTemplateCode = (code, hasNumber) => {
   code = _.trimStart(code, ' /').replace(pathReservedRegex, '_')
   const { dir, name, ext } = pathParse(code)
-  const codeObj = { folder: dir || 'demo', name: name || 'new', ext }
+  const codeObj = { projectId: dir || 'demo', name: name || 'new', ext }
 
   if (hasNumber && codeObj.name !== 'new') {
     const i = codeObj.name.lastIndexOf('__')

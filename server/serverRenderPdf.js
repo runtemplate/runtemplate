@@ -20,27 +20,27 @@ const getPrinter = prop => {
     const fontNames = fontArr.map(fontPair => fontPair[1])
     const promises = fontNames.map(fontName => (prop.loadFont || loadFont)({ ...prop, fontName }))
     return Promise.all(promises).then(
-      () => new PdfmakePrinter({
-        Roboto: {
-          normal: `${prop.fontDir}/${fonts.normal}`,
-          bold: `${prop.fontDir}/${fonts.bold}`,
-          italics: `${prop.fontDir}/${fonts.italics}`,
-          bolditalics: `${prop.fontDir}/${fonts.boldItalics}`,
-        },
-      })
+      () =>
+        new PdfmakePrinter({
+          Roboto: {
+            normal: `${prop.fontDir}/${fonts.normal}`,
+            bold: `${prop.fontDir}/${fonts.bold}`,
+            italics: `${prop.fontDir}/${fonts.italics}`,
+            bolditalics: `${prop.fontDir}/${fonts.boldItalics}`,
+          },
+        })
     )
   })
 }
 
-const makePdf = prop => getPrinter(prop).then(printer => {
-  const pdfKitDocument = printer.createPdfKitDocument(prop.pdfDefinition)
-  const pdfStream = pdfKitDocument.pipe(Stream.PassThrough())
-  pdfKitDocument.end()
-  // pdfStream.pdfKitDocument = pdfKitDocument
-  return rawBody(pdfStream)
-})
-
-const loadTemplate = prop => getTemplate(prop.templateCode || prop.template || prop.code, prop)
+const makePdf = prop =>
+  getPrinter(prop).then(printer => {
+    const pdfKitDocument = printer.createPdfKitDocument(prop.pdfDefinition)
+    const pdfStream = pdfKitDocument.pipe(Stream.PassThrough())
+    pdfKitDocument.end()
+    // pdfStream.pdfKitDocument = pdfKitDocument
+    return rawBody(pdfStream)
+  })
 
 // required: data, fontDir
 // load from web: code, auth
@@ -51,7 +51,7 @@ export default _prop => {
     fontDir: fontCacheDir,
   })
 
-  return (prop.loadTemplate || loadTemplate)(prop).then(template => {
+  return (prop.loadTemplate || getTemplate)(prop.templateId, prop).then(template => {
     // console.log(JSON.stringify(template, null, '  '))
     const { data } = prop
     const { source } = template
