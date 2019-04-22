@@ -62,6 +62,6 @@ export async function fetchData(url, option = {}) {
         return Promise.reject(error)
       })
     }),
-    new Promise((x, reject) => setTimeout(() => reject(new Error('Timeout')), option.timeout || 3000)),
+    new Promise((x, reject) => setTimeout(() => reject(new Error('Timeout')), option.timeout || 6000)),
   ])
 }
