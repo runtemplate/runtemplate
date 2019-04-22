@@ -58,25 +58,18 @@ export const pdfMiddleware = async ({
     data,
   }
 
-  let httpBody
-  let outputUrl
-  if (data) {
-    httpBody = await serverRenderPdf(prop)
-    outputUrl = await saveOutput(outputId, httpBody, prop)
-  } else {
-    httpBody = await loadOutput(outputId, prop)
-  }
-
   const res = {}
   if (method === 'POST') {
+    const pdfKitDocument = await serverRenderPdf(prop)
+    const outputUrl = await saveOutput(outputId, pdfKitDocument, prop)
     res.body = {
       url: _.isString(outputUrl) ? outputUrl : `${outputId}?auth=${auth || ''}`,
       templateId,
       outputId,
     }
     res.type = 'application/json'
-  } else if (httpBody) {
-    res.body = httpBody
+  } else {
+    res.body = await loadOutput(outputId, prop)
     res.type = 'application/pdf'
   }
   return res

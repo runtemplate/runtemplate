@@ -1,0 +1,90 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": ["react-app", "plugin:lodash/canonical"],
+  "parser": "babel-eslint",
+  "plugins": ["babel", "import", "lodash"],
+  "root": true,
+  "rules": {
+    "arrow-body-style": 0,
+    "arrow-parens": ["warn", "as-needed"],
+    "class-methods-use-this": 0,
+    "comma-dangle": [
+      "warn",
+      {
+        "arrays": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "ignore",
+        "imports": "always-multiline",
+        "objects": "always-multiline"
+      }
+    ],
+    "consistent-return": "warn",
+    "import/default": 2,
+    "import/export": 2,
+    "import/named": 2,
+    "import/newline-after-import": "warn",
+    "import/no-unresolved": [
+      2,
+      {
+        "amd": true,
+        "commonjs": true
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/href-no-hash": "off",
+    "linebreak-style": 0,
+    "lodash/import-scope": "off",
+    "lodash/path-style": "off",
+    "lodash/prefer-constant": "off",
+    "lodash/prefer-lodash-method": "off",
+    "lodash/prefer-lodash-typecheck": "off",
+    "lodash/prefer-noop": "off",
+    "max-len": [
+      "warn",
+      {
+        "code": 130
+      }
+    ],
+    "no-alert": "off",
+    "no-console": [
+      "warn",
+      {
+        "allow": ["info", "warn", "error"]
+      }
+    ],
+    "no-multi-assign": "off",
+    "no-nested-ternary": "off",
+    "no-param-reassign": [
+      "warn",
+      {
+        "props": false
+      }
+    ],
+    "no-plusplus": "off",
+    "no-restricted-globals": ["error", "history", "location", "find", "name"],
+    "no-return-assign": "off",
+    "no-underscore-dangle": "off",
+    "no-unused-expressions": 1,
+    "no-unused-labels": 1,
+    "no-unused-vars": 1,
+    "object-curly-newline": "off",
+    "prefer-const": 1,
+    "quotes": [1, "single"],
+    "semi": [1, "never"]
+  },
+  "settings": {
+    "import/extensions": [".js", ".jsx", ".json"],
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".json"],
+        "moduleDirectory": ["node_modules", "."]
+      }
+    }
+  }
+}
