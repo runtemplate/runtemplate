@@ -1,7 +1,5 @@
 import _ from 'lodash'
 import PdfmakePrinter from 'pdfmake'
-// import Stream from 'stream'
-// import rawBody from 'raw-body'
 
 import { renderTemplate } from '../template'
 import { tryCache } from '../util/fetchUtil'
@@ -34,9 +32,6 @@ const getPrinter = prop => {
 }
 
 const makePdf = prop => getPrinter(prop).then(printer => printer.createPdfKitDocument(prop.pdfDefinition))
-// const pdfStream = pdfKitDocument.pipe(Stream.PassThrough())
-// pdfKitDocument.end()
-// return rawBody(pdfStream)
 
 // required: data, fontDir
 // load from web: code, auth
