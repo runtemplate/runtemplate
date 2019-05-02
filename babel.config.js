@@ -1,13 +1,11 @@
 module.exports = api => {
-  // console.log('babel.config api.env() >>', api.env())
-  const isBrowser = api.env('browser')
+  api.cache(true)
   return {
     presets: [
-      [
-        '@babel/preset-env',
-        isBrowser ? { targets: { browsers: '>1%' }, modules: false, useBuiltIns: 'usage' } : { targets: { node: 'current' } },
-      ],
+      ['@babel/preset-env', { modules: process.env.BABEL_ENV === 'esm' ? false : 'commonjs', useBuiltIns: 'usage', corejs: 3 }],
     ],
     plugins: ['lodash'],
+
+    ignore: ['node_modules', 'build', 'index.js', 'babel.config.js', 'webpack.config.js'],
   }
 }

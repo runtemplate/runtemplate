@@ -10,12 +10,13 @@
   "scripts": {
     "clean": "del build",
     "prebuild": "npm run clean",
-    "build": "webpack --config-register esm",
-    "start": "webpack --config-register esm --watch",
+    "build": "NODE_ENV=production BABEL_ENV=esm babel . --ignore 'test','**/*.test.js' --out-dir build",
+    "start": "BABEL_ENV=esm babel . --ignore 'test','**/*.test.js' --out-dir build/esm --watch",
     "prepublishOnly": "npm run build && npm test",
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
+    "core-js": "3.0.1",
     "date-fns": "1.30.1",
     "esm": "^3.2.22",
     "fast-json-patch": "^2.1.0",
@@ -30,34 +31,27 @@
     "markdown-it": "^8.4.2",
     "mem": "4.3.0",
     "path-parse": "^1.0.6",
-    "pdfmake": "0.1.54",
-    "raw-body": "2.4.0"
+    "pdfmake": "0.1.55",
+    "raw-body": "2.4.0",
+    "regenerator-runtime": "0.13.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
+    "@babel/cli": "7.4.4",
     "@babel/core": "7.4.4",
-    "@babel/node": "^7.0.0",
     "@babel/preset-env": "7.4.4",
-    "babel-core": "^7.0.0-0",
     "babel-eslint": "10.0.1",
     "babel-jest": "24.7.1",
-    "babel-loader": "^8.0.5",
     "babel-plugin-lodash": "3.3.4",
     "del-cli": "^1.1.0",
     "delay": "4.2.0",
     "eslint": "5.16.0",
-    "eslint-config-react-app": "4.0.0",
-    "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-flowtype": "3.6.1",
+    "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jest": "22.5.1",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-lodash": "^5.1.0",
-    "eslint-plugin-react": "7.12.4",
     "jest": "24.7.1",
-    "jest-fetch-mock": "^2.1.2",
-    "webpack": "4.30.0",
-    "webpack-cli": "3.3.1"
+    "jest-fetch-mock": "^2.1.2"
   },
   "sideEffects": false,
   "repository": {
