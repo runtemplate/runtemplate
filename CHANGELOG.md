@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.3](https://github.com/runtemplate/runtemplate/compare/v0.8.2...v0.9.3) (2019-05-29)
+
+
+### Bug Fixes
+
+* add more for timeout as google-functions is too slow ([5019cc8](https://github.com/runtemplate/runtemplate/commit/5019cc8))
+* babel.config.js ([a536782](https://github.com/runtemplate/runtemplate/commit/a536782))
+* default saveOutput ([a50adb7](https://github.com/runtemplate/runtemplate/commit/a50adb7))
+* README ([ea83c27](https://github.com/runtemplate/runtemplate/commit/ea83c27))
+* runtemplate build ([dd28b41](https://github.com/runtemplate/runtemplate/commit/dd28b41))
+
+
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/runtemplate/runtemplate/compare/v0.9.0...v0.8.2) (2018-09-30)
 
