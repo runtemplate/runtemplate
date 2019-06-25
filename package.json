@@ -1,24 +1,27 @@
 {
   "version": "0.9.14",
   "description": "The easiest to use pdf template editor and renderer. Even non-techs can edit!",
-  "main": "index.js",
-  "module": "module.js",
-  "browser": "build/browser.js",
+  "main": "build/node/index.js",
+  "browser": "build/browser/browser.js",
   "bin": {
-    "runtemplate": "bin/runtemplate.js"
+    "runtemplate": "build/node/bin/runtemplate.js"
   },
   "scripts": {
+    "prepare": "npm run build",
     "clean": "del build",
     "prebuild": "npm run clean",
-    "build": "NODE_ENV=production BABEL_ENV=esm babel . --ignore 'test','**/*.test.js' --out-dir build",
-    "start": "BABEL_ENV=esm babel . --ignore 'test','**/*.test.js' --out-dir build/esm --watch",
+    "build": "npm-run-all build:*",
+    "build:node": "BABEL_ENV=node babel src --ignore 'test','**/*.test.js' --out-dir build/node",
+    "build:browser": "BABEL_ENV=browser babel src --ignore 'test','**/*.test.js' --out-dir build/browser",
+    "dev": "run-p dev:*",
+    "dev:node": "npm run build:node -- --watch",
+    "dev:browser": "npm run build:browser -- --watch",
     "prepublishOnly": "npm run build && npm test",
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "core-js": "3.1.4",
     "date-fns": "1.30.1",
-    "esm": "^3.2.25",
     "fast-json-patch": "^2.1.0",
     "fs-extra": "^8.0.1",
     "got": "9.6.0",

@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 export * from './util/templateCode'
 
 // template

@@ -29,7 +29,7 @@ const makeFileMap = namespace => {
     ...fileMap,
     get: key => fileMap.get(fixKey(key)),
     set: (key, value) => {
-      console.info(`fileSet ${relativeDir}/${key}`)
+      // console.info(`fileSet ${relativeDir}/${key}`)
       return fileMap.set(fixKey(key), value)
     },
   }
