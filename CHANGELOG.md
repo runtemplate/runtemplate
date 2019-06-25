@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.15"></a>
+## [0.9.15](https://github.com/runtemplate/runtemplate/compare/v0.9.14...v0.9.15) (2019-06-25)
+
+
+### Bug Fixes
+
+* build ([5f0a360](https://github.com/runtemplate/runtemplate/commit/5f0a360))
+* git ignore ([66b0fe1](https://github.com/runtemplate/runtemplate/commit/66b0fe1))
+
+
+
 <a name="0.9.14"></a>
 ## [0.9.14](https://github.com/runtemplate/runtemplate/compare/v0.9.9...v0.9.14) (2019-06-23)
 
