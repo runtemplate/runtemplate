@@ -1,12 +1,11 @@
 #! /usr/bin/env node
 
-const Koa = require('koa')
-const bodyParser = require('koa-bodyparser')
+const express = require('express')
+const bodyParser = require('body-parser')
 const { pdfMiddleware } = require('..')
 
-const app = new Koa()
-
-app.use(bodyParser())
+const app = express()
+app.use(bodyParser.json())
 
 app.use(async ctx => {
   const {

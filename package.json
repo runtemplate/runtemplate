@@ -20,16 +20,16 @@
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
+    "body-parser": "1.19.0",
     "core-js": "3.1.4",
     "date-fns": "1.30.1",
+    "express": "4.17.1",
     "fast-json-patch": "^2.1.0",
     "fs-extra": "^8.0.1",
     "got": "9.6.0",
     "isomorphic-fetch": "^2.2.1",
     "json-e-customizable": "^3.0.1",
     "keyv-lru-files": "1.0.2",
-    "koa": "^2.7.0",
-    "koa-bodyparser": "^4.2.1",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
     "mem": "5.1.0",
