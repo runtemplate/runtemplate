@@ -69,8 +69,13 @@ export const pdfMiddleware = async ({
     }
     res.type = 'application/json'
   } else {
-    res.body = await loadOutput(outputId, prop)
-    res.type = 'application/pdf'
+    const output = await loadOutput(outputId, prop)
+    if (_.isString(output)) {
+      res.redirect = output
+    } else {
+      res.body = output
+      res.type = 'application/pdf'
+    }
   }
   return res
 }
