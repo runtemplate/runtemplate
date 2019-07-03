@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.16"></a>
+## [0.9.16](https://github.com/runtemplate/runtemplate/compare/v0.9.15...v0.9.16) (2019-07-03)
+
+
+### Bug Fixes
+
+* babel ignore ([4218ae9](https://github.com/runtemplate/runtemplate/commit/4218ae9))
+* redirect if output is string ([3a2e532](https://github.com/runtemplate/runtemplate/commit/3a2e532))
+* use express instead of koa ([d9ba877](https://github.com/runtemplate/runtemplate/commit/d9ba877))
+
+
+
 <a name="0.9.15"></a>
 ## [0.9.15](https://github.com/runtemplate/runtemplate/compare/v0.9.14...v0.9.15) (2019-06-25)
 
