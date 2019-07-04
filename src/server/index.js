@@ -63,7 +63,7 @@ export const pdfMiddleware = async ({
     const pdfKitDocument = await serverRenderPdf(prop)
     const outputUrl = await saveOutput(outputId, pdfKitDocument, prop)
     res.body = {
-      url: _.isString(outputUrl) ? outputUrl : `${outputId}?auth=${auth || ''}`,
+      url: _.isString(outputUrl) ? outputUrl : `${outputId}?idToken=${auth || ''}`,
       templateId,
       outputId,
     }
