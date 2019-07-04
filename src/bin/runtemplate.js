@@ -17,16 +17,20 @@ const respondJson = (func, req, res) => func(req).then(retData => {
   return res.json(retData.body)
 })
 
-app.use('/pdf/:projectId/:name/:number', (req, res) => respondJson(
-  pdfMiddleware,
-  {
-    method: req.method,
-    path: req.path,
-    query: req.query,
-    reqBody: req.body,
-  },
-  res
-))
+app.use('/pdf/:projectId/:name/:number', (req, res) => {
+  const { projectId, name, number } = req.params
+  const path = `/pdf/${projectId}/${name}/${number}`
+  return respondJson(
+    pdfMiddleware,
+    {
+      method: req.method,
+      path,
+      query: req.query,
+      reqBody: req.body,
+    },
+    res
+  )
+})
 
 if (!module.parent) {
   // listen to HOST and PORT
