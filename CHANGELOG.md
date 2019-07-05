@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.17"></a>
+## [0.9.17](https://github.com/runtemplate/runtemplate/compare/v0.9.16...v0.9.17) (2019-07-05)
+
+
+### Bug Fixes
+
+* bin/runtemplate ([57a2c47](https://github.com/runtemplate/runtemplate/commit/57a2c47))
+* jest ([8ebdf97](https://github.com/runtemplate/runtemplate/commit/8ebdf97))
+* replace auth= to idToken= ([cfbd514](https://github.com/runtemplate/runtemplate/commit/cfbd514))
+* runtemplate path ([4f77be2](https://github.com/runtemplate/runtemplate/commit/4f77be2))
+* use express send & use auth instead of idToken ([faaaa71](https://github.com/runtemplate/runtemplate/commit/faaaa71))
+
+
+
 <a name="0.9.16"></a>
 ## [0.9.16](https://github.com/runtemplate/runtemplate/compare/v0.9.15...v0.9.16) (2019-07-03)
 
