@@ -7,14 +7,17 @@ const { pdfMiddleware } = require('..')
 const app = express()
 app.use(bodyParser.json())
 
-const respondJson = (func, req, res) => func(req).then(retData => {
-  if (retData.status) res.status(retData.status)
-  if (retData.headers) res.set(retData.headers)
-  if (retData.type) res.type(retData.type)
-  if (retData.redirect) {
-    return res.redirect(retData.redirect)
+const respondJson = (func, req, res) => func(req).then(({ status, headers, type, redirect, body }) => {
+  if (status) res.status(status)
+  if (headers) res.set(headers)
+  if (type) res.type(type)
+  if (redirect) {
+    return res.redirect(redirect)
   }
-  return res.json(retData.body)
+  if (!type || type.includes('/json')) {
+    return res.json(body)
+  }
+  return res.send(body)
 })
 
 app.use('/pdf/:projectId/:name/:number', (req, res) => {

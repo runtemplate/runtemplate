@@ -29,8 +29,9 @@ const makeFileMap = namespace => {
     ...fileMap,
     get: key => fileMap.get(fixKey(key)),
     set: (key, value) => {
-      // console.info(`fileSet ${relativeDir}/${key}`)
-      return fileMap.set(fixKey(key), value)
+      const fixedKey = fixKey(key)
+      // console.log(`fileSet ${wantDir}/${fixedKey}`)
+      return fileMap.set(fixedKey, value)
     },
   }
 }
@@ -68,7 +69,7 @@ const gotJson = (url, option) => got(url, { timeout: 3000, json: true, ...option
 
 // -------------------------------------------------------------------------
 
-export const getOutput = memAndFile('output', (code, rest) => gotBuffer(`${HOST}/pdf/${code}?idToken=${rest.auth || ''}`))
+export const getOutput = memAndFile('output', (code, rest) => gotBuffer(`${HOST}/pdf/${code}?auth=${rest.auth || ''}`))
 const { memoryMap, fileMap } = getOutput
 export const setOutput = async (code, pdfKitDocument, { auth, data }) => {
   const writeStream = Stream.PassThrough()
@@ -78,20 +79,20 @@ export const setOutput = async (code, pdfKitDocument, { auth, data }) => {
   const body = await rawBody(pdfStream)
   memoryMap.set(code, body)
   fileMap.set(code, body)
-  await got(`${HOST}/pdf/${code}?idToken=${auth}`, { method: 'POST', body: { data }, json: true }).catch(err => console.error(err))
+  await got(`${HOST}/pdf/${code}?auth=${auth}`, { method: 'POST', body: { data }, json: true }).catch(err => console.error(err))
 }
 
 // -------------------------------------------------------------------------
 
 export const getTemplate = memAndFile('template', (templateCode, rest) => {
-  return gotJson(`${HOST}/api/template/${templateCode}?idToken=${rest.auth || ''}`)
+  return gotJson(`${HOST}/api/template/${templateCode}?auth=${rest.auth || ''}`)
 })
 
 // -------------------------------------------------------------------------
 
 export const fontCacheDir = getCacheDir('font')
 export const getFont = memAndFile('font', (fontName, rest) => {
-  return gotBuffer(`${HOST}/font/${fontName}?idToken=${rest.auth || ''}`)
+  return gotBuffer(`${HOST}/font/${fontName}?auth=${rest.auth || ''}`)
 })
 
 // -------------------------------------------------------------------------
