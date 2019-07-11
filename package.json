@@ -1,5 +1,5 @@
 {
-  "version": "0.9.17",
+  "version": "0.9.18",
   "description": "PDF template editor that is designed non-techs. Renderer service is standalone.",
   "main": "build/node/index.js",
   "browser": "build/browser/browser.js",
