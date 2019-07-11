@@ -1,6 +1,6 @@
 {
   "version": "0.9.17",
-  "description": "The easiest to use pdf template editor and renderer. Even non-techs can edit!",
+  "description": "PDF template editor that is designed non-techs. Renderer service is standalone.",
   "main": "build/node/index.js",
   "browser": "build/browser/browser.js",
   "bin": {

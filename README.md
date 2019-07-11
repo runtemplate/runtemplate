@@ -7,7 +7,7 @@
 
 **Beta Version**
 
-The easiest to use pdf template editor and renderer. Even non-techs can edit!
+PDF template editor that is designed non-techs. Renderer service is standalone.
 
 [runtemplate.com](https://runtemplate.com) is the online pdf template editor.
 
@@ -65,7 +65,7 @@ const response = await pdfMiddleware({
 example http POST
 
 ```
-http://localhost:8899/pdf/demo/new__Receipt-Number?idToken=YOUR_AUTH_OR_EMPTY
+http://localhost:8899/pdf/demo/new__Receipt-Number?auth=YOUR_AUTH_OR_EMPTY
 
 {"data":{"number":"Receipt-Number","timeAt":"2019-02-18T15:31:08.067Z","items":[{"type":"Product","name":"A","quantity":1,"price":12},{"type":"Product","name":"B","quantity":1,"price":1}]}}'
 ```
@@ -73,5 +73,5 @@ http://localhost:8899/pdf/demo/new__Receipt-Number?idToken=YOUR_AUTH_OR_EMPTY
 example http GET
 
 ```
-http://localhost:8899/pdf/demo/new__Receipt-Number?idToken=YOUR_AUTH_OR_EMPTY
+http://localhost:8899/pdf/demo/new__Receipt-Number?auth=YOUR_AUTH_OR_EMPTY
 ```
