@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.19](https://github.com/runtemplate/runtemplate/compare/v0.9.18...v0.9.19) (2019-07-23)
+
+
+
 ### [0.9.18](https://github.com/runtemplate/runtemplate/compare/v0.9.16...v0.9.18) (2019-07-11)
 
 
